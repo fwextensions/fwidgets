@@ -1,6 +1,7 @@
 {
   "extends": "@create-figma-plugin/tsconfig",
   "compilerOptions": {
+    "target":"ES2022",
     "typeRoots": ["node_modules/@figma", "node_modules/@types"],
     "paths": {
       "@/*": ["./src/*"]
