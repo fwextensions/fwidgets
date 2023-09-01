@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useCallback, useEffect, useState } from "preact/hooks";
 import { Stack, VerticalSpace } from "@create-figma-plugin/ui";
-import { respondTo } from "@/utils/call";
+import { receive } from "@/utils/call";
 import { DeferredPromise } from "@/utils/DeferredPromise";
 import { FwidgetsEvent } from "@/fwidgets/constants";
 import InputText from "@/fwidgets/components/InputText";
@@ -53,7 +53,7 @@ export default function Fwidgets()
 	const [widgets, setWidgets] = useState<any[]>([]);
 
 	useEffect(() => {
-		respondTo(FwidgetsEvent, (data) => {
+		receive(FwidgetsEvent, (data) => {
 			const response = createWidgetSpec(data);
 
 			if (!(response instanceof Error)) {
