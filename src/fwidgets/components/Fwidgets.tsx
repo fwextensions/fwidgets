@@ -1,8 +1,7 @@
 import { h } from "preact";
 import { useCallback, useEffect, useState } from "preact/hooks";
 import { Stack, VerticalSpace } from "@create-figma-plugin/ui";
-import { receive } from "@/utils/call";
-import { DeferredPromise } from "@/utils/DeferredPromise";
+import { receive, DeferredPromise } from "figma-await-call";
 import { FwidgetsEvent } from "@/fwidgets/constants";
 import InputText from "@/fwidgets/components/InputText";
 import InputButtons from "@/fwidgets/components/InputButtons";

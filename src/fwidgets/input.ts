@@ -1,4 +1,4 @@
-import { call } from "@/utils/call";
+import { call } from "figma-await-call";
 import { FwidgetsEvent } from "@/fwidgets/constants";
 
 export function text(

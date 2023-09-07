@@ -2,6 +2,7 @@
   "dependencies": {
     "@create-figma-plugin/ui": "^2.6.0",
     "@create-figma-plugin/utilities": "^2.6.0",
+    "figma-await-call": "*",
     "preact": "^10"
   },
   "devDependencies": {
