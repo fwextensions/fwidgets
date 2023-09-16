@@ -1,0 +1,8 @@
+.inputButton {
+	margin-bottom: var(--space-extra-small);
+}
+
+.selected {
+	outline: 2px solid var(--figma-color-border-disabled-strong);
+	outline-offset: 2px;
+}

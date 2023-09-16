@@ -1,4 +1,5 @@
 import { h } from "preact";
+import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
 import {
 	Button,
@@ -7,8 +8,7 @@ import {
 	Textbox,
 	useInitialFocus,
 } from "@create-figma-plugin/ui";
-import JSX = h.JSX;
-import Label from "@/fwidgets/components/Label";
+import Label from "@/components/Label";
 
 interface InputTextProps {
 	confirm: (text: string) => void;
@@ -43,18 +43,19 @@ export default function InputText({
 
 	const handleKeyDown = useCallback(
 		(event: JSX.TargetedKeyboardEvent<HTMLInputElement>) => {
-			if (event.key === "Enter") {
+			if (event.key === "Enter" && value) {
 				handleConfirm();
 			}
 		},
 		[handleConfirm]
 	);
 
-	const nextButtonDisabled = disabled || !value;
-
 	return (
 		<Stack space="small">
-			<Label text={label} />
+			<Label
+				text={label}
+				disabled={disabled}
+			/>
 			<Inline space="small">
 				<Textbox
 					variant="border"
@@ -65,12 +66,14 @@ export default function InputText({
 					onInput={handleInput}
 					onKeyDown={handleKeyDown}
 				/>
-				<Button
-					disabled={nextButtonDisabled}
-					onClick={handleConfirm}
-				>
-					Next
-				</Button>
+				{ !disabled &&
+					<Button
+						disabled={!value}
+						onClick={handleConfirm}
+					>
+						Next
+					</Button>
+				}
 			</Inline>
 		</Stack>
 	);

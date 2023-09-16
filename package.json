@@ -1,19 +1,20 @@
 {
   "dependencies": {
-    "@create-figma-plugin/ui": "^2.6.0",
-    "@create-figma-plugin/utilities": "^2.6.0",
-    "figma-await-call": "*",
+    "@create-figma-plugin/ui": "^2.6.1",
+    "@create-figma-plugin/utilities": "^2.6.1",
+    "classnames": "^2.3.2",
+    "figma-await-call": "0.0.2",
     "preact": "^10"
   },
   "devDependencies": {
-    "@create-figma-plugin/build": "^2.6.0",
-    "@create-figma-plugin/tsconfig": "^2.6.0",
+    "@create-figma-plugin/build": "^2.6.1",
+    "@create-figma-plugin/tsconfig": "^2.6.1",
     "@figma/plugin-typings": "1.76.0",
     "typescript": "^5"
   },
   "scripts": {
     "build": "build-figma-plugin --typecheck --minify",
-    "watch": "build-figma-plugin --typecheck --watch"
+    "dev": "build-figma-plugin --typecheck --watch"
   },
   "figma-plugin": {
     "editorType": [

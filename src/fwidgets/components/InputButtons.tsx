@@ -1,11 +1,14 @@
 import { h } from "preact";
+import { useState } from "preact/hooks";
 import {
 	Button,
 	Inline,
 	Stack,
 	useInitialFocus
 } from "@create-figma-plugin/ui";
-import Label from "@/fwidgets/components/Label";
+import classnames from "classnames/bind";
+import Label from "@/components/Label";
+import styles from "./InputButtons.css";
 
 interface ButtonProps {
 	label: string;
@@ -20,6 +23,8 @@ interface InputButtonProps {
 	label?: string;
 }
 
+const cx = classnames.bind(styles);
+
 export default function InputButtons({
 		confirm,
 		buttons,
@@ -27,15 +32,21 @@ export default function InputButtons({
 		label = "",
 	}: InputButtonProps)
 {
+	const [selectedLabel, setSelectedLabel] = useState("");
 	const initialFocus = useInitialFocus();
 
+	const handleClick = (label: string) => {
+		setSelectedLabel(label);
+		confirm(label);
+	};
+
 	const buttonElements = buttons.map((label, i) => (
-		<Button
+		<Button class={cx("inputButton", { "selected": label === selectedLabel })}
 			key={i}
 			disabled={disabled}
 			secondary
 			{...(i === 0 ? initialFocus : {})}
-			onClick={() => confirm(label)}
+			onClick={() => handleClick(label)}
 		>
 			{label}
 		</Button>
@@ -43,8 +54,11 @@ export default function InputButtons({
 
 	return (
 		<Stack space="small">
-			<Label text={label} />
-			<Inline space="small">
+			<Label
+				text={label}
+				disabled={disabled}
+			/>
+			<Inline space="extraSmall">
 				{buttonElements}
 			</Inline>
 		</Stack>

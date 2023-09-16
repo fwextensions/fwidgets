@@ -4,8 +4,7 @@
     "target":"ES2022",
     "typeRoots": ["node_modules/@figma", "node_modules/@types"],
     "paths": {
-      "@/*": ["./src/*"],
-      "figma-await-call": ["./node_modules/figma-await-call/src"]
+      "@/*": ["./src/fwidgets/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]

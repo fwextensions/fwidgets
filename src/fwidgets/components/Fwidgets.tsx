@@ -1,10 +1,11 @@
 import { h } from "preact";
 import { useCallback, useEffect, useState } from "preact/hooks";
-import { Stack, VerticalSpace } from "@create-figma-plugin/ui";
+import { Container, Stack, VerticalSpace } from "@create-figma-plugin/ui";
 import { receive, DeferredPromise } from "figma-await-call";
-import { FwidgetsEvent } from "@/fwidgets/constants";
-import InputText from "@/fwidgets/components/InputText";
-import InputButtons from "@/fwidgets/components/InputButtons";
+import { FwidgetsEvent } from "@/constants";
+import InputText from "@/components/InputText";
+import InputButtons from "@/components/InputButtons";
+import InputDropdown from "@/components/InputDropdown";
 
 interface WidgetCall {
 	type: string;
@@ -28,7 +29,7 @@ function createWidgetSpec(
 
 	const { type, options } = data;
 
-	if (["text", "buttons"].includes(type)) {
+	if (["text", "buttons", "dropdown"].includes(type)) {
 		return {
 			type,
 			options,
@@ -36,7 +37,7 @@ function createWidgetSpec(
 		};
 	}
 
-	return new Error(`Unrecognized widget type: ${type}.`);
+	throw new Error(`Unrecognized widget type: ${type}.`);
 }
 
 function disable(
@@ -73,31 +74,46 @@ export default function Fwidgets()
 	const widgetElements = widgets.map(({ type, options }, i) => {
 		const focused = i === widgets.length - 1;
 
-		if (type === "text") {
-			return (
-				<InputText
-					key={i}
-					confirm={handleConfirm}
-					focused={focused}
-					{...options}
-				/>
-			);
-		} else {
-			return (
-				<InputButtons
-					key={i}
-					confirm={handleConfirm}
-					focused={focused}
-					{...options}
-				/>
-			);
+		switch (type) {
+			case "text":
+				return (
+					<InputText
+						key={i}
+						confirm={handleConfirm}
+						focused={focused}
+						{...options}
+					/>
+				);
+
+			case "buttons":
+				return (
+					<InputButtons
+						key={i}
+						confirm={handleConfirm}
+						focused={focused}
+						{...options}
+					/>
+				);
+
+			case "dropdown":
+				return (
+					<InputDropdown
+						key={i}
+						confirm={handleConfirm}
+						focused={focused}
+						{...options}
+					/>
+				);
 		}
 	});
 
 	return (
-		<Stack space="small">
-			{widgetElements}
+		<Container space="large">
 			<VerticalSpace space="large" />
-		</Stack>
+			<Stack space="small">
+				{widgetElements}
+				<VerticalSpace space="large" />
+			</Stack>
+		</Container>
 	);
 }
