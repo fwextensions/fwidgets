@@ -1,14 +1,8 @@
 import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
-import {
-	Button,
-	Inline,
-	Stack,
-	Textbox,
-	useInitialFocus,
-} from "@create-figma-plugin/ui";
-import Label from "@/components/Label";
+import { Textbox, useInitialFocus } from "@create-figma-plugin/ui";
+import InlineWidget from "@/components/InlineWidget";
 
 interface InputTextProps {
 	confirm: (text: string) => void;
@@ -51,30 +45,21 @@ export default function InputText({
 	);
 
 	return (
-		<Stack space="small">
-			<Label
-				text={label}
+		<InlineWidget
+			label={label}
+			disabled={disabled}
+			nextEnabled={!!value}
+			onNextClick={handleConfirm}
+		>
+			<Textbox
+				variant="border"
 				disabled={disabled}
+				value={value}
+				placeholder={placeholder}
+				{...(focused ? initialFocus : {})}
+				onInput={handleInput}
+				onKeyDown={handleKeyDown}
 			/>
-			<Inline space="small">
-				<Textbox
-					variant="border"
-					disabled={disabled}
-					value={value}
-					placeholder={placeholder}
-					{...(focused ? initialFocus : {})}
-					onInput={handleInput}
-					onKeyDown={handleKeyDown}
-				/>
-				{ !disabled &&
-					<Button
-						disabled={!value}
-						onClick={handleConfirm}
-					>
-						Next
-					</Button>
-				}
-			</Inline>
-		</Stack>
+		</InlineWidget>
 	);
 }

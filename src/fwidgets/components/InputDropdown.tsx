@@ -1,13 +1,8 @@
 import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
-import {
-	Button,
-	Dropdown,
-	Inline,
-	Stack,
-} from "@create-figma-plugin/ui";
-import Label from "@/components/Label";
+import { Dropdown } from "@create-figma-plugin/ui";
+import InlineWidget from "@/components/InlineWidget";
 
 interface InputDropdownProps {
 	confirm: (text: string) => void;
@@ -37,29 +32,20 @@ export default function InputDropdown({
 	);
 
 	return (
-		<Stack space="small">
-			<Label
-				text={label}
+		<InlineWidget
+			label={label}
+			disabled={disabled}
+			nextEnabled={!!value}
+			onNextClick={handleConfirm}
+		>
+			<Dropdown
+				variant="border"
 				disabled={disabled}
+				options={options.map((value) => ({ value }))}
+				value={value}
+				placeholder={placeholder}
+				onChange={handleChange}
 			/>
-			<Inline space="small">
-				<Dropdown
-					variant="border"
-					disabled={disabled}
-					options={options.map((value) => ({ value }))}
-					value={value}
-					placeholder={placeholder}
-					onChange={handleChange}
-				/>
-				{ !disabled &&
-					<Button
-						disabled={!value}
-						onClick={handleConfirm}
-					>
-						Next
-					</Button>
-				}
-			</Inline>
-		</Stack>
+		</InlineWidget>
 	);
 }

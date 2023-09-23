@@ -1,1 +1,1 @@
-export const FwidgetsEvent = "FWIDGETS";
+export const FwidgetsCall = "FWIDGETS";

@@ -1,44 +1,14 @@
 import { h } from "preact";
-import { useCallback, useEffect, useState } from "preact/hooks";
+import {
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useState
+} from "preact/hooks";
 import { Container, Stack, VerticalSpace } from "@create-figma-plugin/ui";
-import { receive, DeferredPromise } from "figma-await-call";
-import { FwidgetsEvent } from "@/constants";
-import InputText from "@/components/InputText";
-import InputButtons from "@/components/InputButtons";
-import InputDropdown from "@/components/InputDropdown";
-
-interface WidgetCall {
-	type: string;
-	options?: Record<string, any>;
-}
-
-interface WidgetSpec extends WidgetCall {
-	deferred: DeferredPromise<any>;
-}
-
-const Elements = {
-
-};
-
-function createWidgetSpec(
-	data: WidgetCall)
-{
-	if (!data || typeof data !== "object") {
-		return new Error(`Unrecognized widget data: ${data}.`);
-	}
-
-	const { type, options } = data;
-
-	if (["text", "buttons", "dropdown"].includes(type)) {
-		return {
-			type,
-			options,
-			deferred: new DeferredPromise()
-		};
-	}
-
-	throw new Error(`Unrecognized widget type: ${type}.`);
-}
+import { receive } from "figma-await-call";
+import { FwidgetsCall } from "@/constants";
+import { createWidgetSpec, createWidgetComponent, WidgetSpec } from "@/widgets";
 
 function disable(
 	widgets: WidgetSpec[])
@@ -50,61 +20,38 @@ function disable(
 
 export default function Fwidgets()
 {
-	const [widgets, setWidgets] = useState<any[]>([]);
+	const [widgets, setWidgets] = useState<WidgetSpec[]>([]);
 
 	useEffect(() => {
-		receive(FwidgetsEvent, (data) => {
+		receive(FwidgetsCall, (data) => {
 			const response = createWidgetSpec(data);
 
-			if (!(response instanceof Error)) {
-				setWidgets((widgets) => [...disable(widgets), response]);
+			setWidgets((widgets) => [...disable(widgets), response]);
 
-				return response.deferred;
-			}
-
-			return response;
+			return response.deferred;
 		});
 	}, []);
+
+		// using useEffect here scrolls to the previous scrollHeight, even though
+		// useLayoutEffect is supposed to happen before rendering.  and setting
+		// document.body.scrollTop doesn't seem to work, so scroll the whole window.
+	useLayoutEffect(() => {
+		window.scrollTo({
+			top: document.body.scrollHeight,
+			left: 0,
+			behavior: "smooth"
+		});
+	}, [widgets]);
 
 	const handleConfirm = useCallback(
 		(text: string) => widgets[widgets.length - 1]?.deferred.resolve(text),
 		[widgets]
 	);
 
-	const widgetElements = widgets.map(({ type, options }, i) => {
+	const widgetElements = widgets.map((spec, i) => {
 		const focused = i === widgets.length - 1;
 
-		switch (type) {
-			case "text":
-				return (
-					<InputText
-						key={i}
-						confirm={handleConfirm}
-						focused={focused}
-						{...options}
-					/>
-				);
-
-			case "buttons":
-				return (
-					<InputButtons
-						key={i}
-						confirm={handleConfirm}
-						focused={focused}
-						{...options}
-					/>
-				);
-
-			case "dropdown":
-				return (
-					<InputDropdown
-						key={i}
-						confirm={handleConfirm}
-						focused={focused}
-						{...options}
-					/>
-				);
-		}
+		return createWidgetComponent(spec, focused, handleConfirm);
 	});
 
 	return (
