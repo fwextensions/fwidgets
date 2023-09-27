@@ -5,7 +5,7 @@ import { TextboxColor, useInitialFocus } from "@create-figma-plugin/ui";
 import InlineWidget from "@/components/InlineWidget";
 
 interface InputColorProps {
-	confirm: (text: string) => void;
+	confirm: (color: [string, string]) => void;
 	disabled?: boolean;
 	placeholder?: string;
 	label?: string;
@@ -33,7 +33,7 @@ export default function InputColor({
   };
 
 	const handleConfirm = useCallback(
-		() => hexColor && opacity && confirm(hexColor),
+		() => hexColor && opacity && confirm([hexColor, opacity]),
 		[hexColor, opacity]
 	);
 
@@ -50,7 +50,7 @@ export default function InputColor({
 				{...(focused ? initialFocus : {})}
 				hexColor={hexColor}
 				opacity={opacity}
-				placeholder={placeholder}
+				hexColorPlaceholder={placeholder}
 				onHexColorInput={handleHexColorInput}
 				onOpacityInput={handleOpacityInput}
 			/>

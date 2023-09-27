@@ -1,7 +1,9 @@
 import * as input from "./input";
+import { setSize } from "./ui";
 
 const Modules = {
-	input
+	input,
+	setSize,
 } as const;
 
 type MainFunction = (modules: typeof Modules) => Promise<string|void>;
