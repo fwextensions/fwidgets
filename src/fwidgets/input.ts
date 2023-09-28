@@ -1,29 +1,18 @@
-import { call } from "figma-await-call";
-import { FwidgetsCall } from "@/constants";
-import { show } from "@/ui";
-
-function callFwidgets(
-	type: string,
-	options: object)
-{
-	show();
-
-	return call<string>(FwidgetsCall, { type, options });
-}
+import { callFwidgets } from "@/utils";
 
 export function buttons(
 	label: string,
 	buttons: string[],
 	options: object = {})
 {
-	return callFwidgets("Buttons", { ...options, label, buttons });
+	return callFwidgets("InputButtons", { ...options, label, buttons });
 }
 
 export function color(
 	label: string = "",
 	options: object = {})
 {
-	return callFwidgets("Color", { ...options, label });
+	return callFwidgets("InputColor", { ...options, label });
 }
 
 export function dropdown(
@@ -31,12 +20,19 @@ export function dropdown(
 	optionItems: string[],
 	options: object = {})
 {
-	return callFwidgets("Dropdown", { ...options, label, options: optionItems });
+	return callFwidgets("InputDropdown", { ...options, label, options: optionItems });
+}
+
+export function number(
+	label: string = "",
+	options: object = {})
+{
+	return callFwidgets<number>("InputNumber", { ...options, label });
 }
 
 export function text(
 	label: string = "",
 	options: object = {})
 {
-	return callFwidgets("Text", { ...options, label });
+	return callFwidgets("InputText", { ...options, label });
 }

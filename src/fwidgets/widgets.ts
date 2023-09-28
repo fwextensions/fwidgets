@@ -3,20 +3,22 @@ import { DeferredPromise } from "figma-await-call";
 import InputButtons from "@/components/InputButtons";
 import InputColor from "@/components/InputColor";
 import InputDropdown from "@/components/InputDropdown";
+import InputNumber from "@/components/InputNumber";
 import InputText from "@/components/InputText";
-
-const InputPattern = /^Input/;
+import OutputText from "@/components/OutputText";
 
 const componentList = [
 	InputButtons,
 	InputColor,
 	InputDropdown,
+	InputNumber,
 	InputText,
+	OutputText,
 ] as const;
 
 const components: Record<string, FunctionComponent> = componentList.reduce((result, component) => ({
 	...result,
-	[component.name.replace(InputPattern, "")]: component
+	[component.name]: component
 }), {});
 
 export interface WidgetCall {
