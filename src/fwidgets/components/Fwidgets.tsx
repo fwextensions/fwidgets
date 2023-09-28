@@ -41,6 +41,13 @@ export default function Fwidgets()
 			left: 0,
 			behavior: "smooth"
 		});
+
+			// the previous scroll call isn't always sufficient to scroll the window to
+			// the bottom, so do it again after a slight delay
+		setTimeout(() => window.scrollTo({
+			top: document.body.scrollHeight,
+			left: 0,
+		}), 10);
 	}, [widgets]);
 
 	const handleConfirm = useCallback(
