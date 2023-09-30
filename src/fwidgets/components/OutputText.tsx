@@ -2,14 +2,15 @@ import { h } from "preact";
 import { useEffect } from "preact/hooks";
 import { Text } from "@create-figma-plugin/ui";
 
-	// we have to set the first two of these properties to make the text selectable
+	// we have to set the first two of these properties to override the included
+	// CSS and make the text selectable
 const TextStyle = {
 	userSelect: "text",
 	pointerEvents: "auto",
 	cursor: "auto",
 };
 
-interface InputTextProps {
+interface OutputTextProps {
 	confirm: (text: string) => void;
 	text: string;
 	numeric?: boolean;
@@ -21,7 +22,7 @@ export default function OutputText({
 		text,
 		numeric,
 		align,
-	}: InputTextProps)
+	}: OutputTextProps)
 {
 		// we're not waiting for any user input, so resolve the promise immediately
 		// when we're mounted

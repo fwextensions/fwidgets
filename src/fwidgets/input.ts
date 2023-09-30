@@ -12,7 +12,7 @@ export function color(
 	label: string = "",
 	options: object = {})
 {
-	return callFwidgets("InputColor", { ...options, label });
+	return callFwidgets<RGBA>("InputColor", { ...options, label });
 }
 
 export function dropdown(
@@ -28,6 +28,16 @@ export function number(
 	options: object = {})
 {
 	return callFwidgets<number>("InputNumber", { ...options, label });
+}
+
+export async function page(
+	label: string = "Select a page:",
+	options: object = { placeholder: "Pages" })
+{
+	const pageNames = figma.root.children.map(({ name }) => name);
+	const selectedPageName = await callFwidgets("InputDropdown", { ...options, label, options: pageNames });
+
+	return figma.root.children.find(({ name }) => name === selectedPageName);
 }
 
 export function text(

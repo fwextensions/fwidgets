@@ -1,11 +1,11 @@
 import * as input from "./input";
 import * as output from "./output";
-import { setSize } from "./ui";
+import * as ui from "./ui";
 
 const Modules = {
 	input,
 	output,
-	setSize,
+	ui,
 } as const;
 
 type MainFunction = (modules: typeof Modules) => Promise<string|void>;

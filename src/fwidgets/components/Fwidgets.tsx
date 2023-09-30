@@ -8,7 +8,7 @@ import {
 import { Container, Stack, VerticalSpace } from "@create-figma-plugin/ui";
 import { receive } from "figma-await-call";
 import { FwidgetsCall } from "@/constants";
-import { createWidgetSpec, createWidgetComponent, WidgetSpec } from "@/widgets";
+import { createWidgetSpec, createWidgetElement, WidgetSpec } from "@/widgets";
 
 function disable(
 	widgets: WidgetSpec[])
@@ -44,6 +44,7 @@ export default function Fwidgets()
 
 			// the previous scroll call isn't always sufficient to scroll the window to
 			// the bottom, so do it again after a slight delay
+			// TODO: fix this kludge
 		setTimeout(() => window.scrollTo({
 			top: document.body.scrollHeight,
 			left: 0,
@@ -58,7 +59,7 @@ export default function Fwidgets()
 	const widgetElements = widgets.map((spec, i) => {
 		const focused = i === widgets.length - 1;
 
-		return createWidgetComponent(spec, focused, handleConfirm);
+		return createWidgetElement(spec, focused, handleConfirm);
 	});
 
 	return (
@@ -66,8 +67,8 @@ export default function Fwidgets()
 			<VerticalSpace space="large" />
 			<Stack space="small">
 				{widgetElements}
-				<VerticalSpace space="large" />
 			</Stack>
+			<VerticalSpace space="large" />
 		</Container>
 	);
 }

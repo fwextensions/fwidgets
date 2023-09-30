@@ -1,10 +1,11 @@
-import { h, FunctionComponent } from "preact";
+import { h } from "preact";
 import { DeferredPromise } from "figma-await-call";
 import InputButtons from "@/components/InputButtons";
 import InputColor from "@/components/InputColor";
 import InputDropdown from "@/components/InputDropdown";
 import InputNumber from "@/components/InputNumber";
 import InputText from "@/components/InputText";
+import OutputClipboard from "@/components/OutputClipboard";
 import OutputText from "@/components/OutputText";
 
 const componentList = [
@@ -13,10 +14,11 @@ const componentList = [
 	InputDropdown,
 	InputNumber,
 	InputText,
+	OutputClipboard,
 	OutputText,
 ] as const;
 
-const components: Record<string, FunctionComponent> = componentList.reduce((result, component) => ({
+const components: Record<string, typeof componentList[number]> = componentList.reduce((result, component) => ({
 	...result,
 	[component.name]: component
 }), {});
@@ -50,7 +52,7 @@ export function createWidgetSpec(
 	};
 }
 
-export function createWidgetComponent(
+export function createWidgetElement(
 	spec: WidgetSpec,
 	focused: boolean,
 	confirm: (text: string) => void)
@@ -68,4 +70,13 @@ export function createWidgetComponent(
 			...options
 		}
 	);
+// TODO: this seems in the right direction, but still shows TS errors
+//	return h<ComponentProps<typeof Component>>(
+//		Component,
+//		{
+//			focused,
+//			confirm,
+//			...options
+//		}
+//	);
 }

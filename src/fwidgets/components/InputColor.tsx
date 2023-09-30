@@ -5,7 +5,7 @@ import { TextboxColor, useInitialFocus } from "@create-figma-plugin/ui";
 import InlineWidget from "@/components/InlineWidget";
 
 interface InputColorProps {
-	confirm: (color: [string, string]) => void;
+	confirm: (color: RGBA) => void;
 	disabled?: boolean;
 	placeholder?: string;
 	label?: string;
@@ -22,18 +22,23 @@ export default function InputColor({
 {
 	const [hexColor, setHexColor] = useState<string>("000000");
 	const [opacity, setOpacity] = useState<string>("100%");
+	const [rgbaColor, setRgbaColor] = useState<RGBA | null>(null);
 	const initialFocus = useInitialFocus();
 
 	const handleHexColorInput = (event: JSX.TargetedEvent<HTMLInputElement>) => {
-    setHexColor(event.currentTarget.value);
-  };
+		setHexColor(event.currentTarget.value);
+	};
 
 	const handleOpacityInput = (event: JSX.TargetedEvent<HTMLInputElement>) => {
-    setOpacity(event.currentTarget.value);
-  };
+		setOpacity(event.currentTarget.value);
+	};
+
+	const handleRGBAInput = (rgba: RGBA | null) => {
+		setRgbaColor(rgba);
+	};
 
 	const handleConfirm = useCallback(
-		() => hexColor && opacity && confirm([hexColor, opacity]),
+		() => rgbaColor && confirm(rgbaColor),
 		[hexColor, opacity]
 	);
 
@@ -41,7 +46,7 @@ export default function InputColor({
 		<InlineWidget
 			label={label}
 			disabled={disabled}
-			nextEnabled={!!(hexColor && opacity)}
+			nextEnabled={!!(rgbaColor)}
 			onNextClick={handleConfirm}
 		>
 			<TextboxColor
@@ -53,6 +58,7 @@ export default function InputColor({
 				hexColorPlaceholder={placeholder}
 				onHexColorInput={handleHexColorInput}
 				onOpacityInput={handleOpacityInput}
+				onRgbaColorValueInput={handleRGBAInput}
 			/>
 		</InlineWidget>
 	);
