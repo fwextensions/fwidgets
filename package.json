@@ -1,4 +1,22 @@
 {
+  "name": "fwidgets",
+  "version": "0.0.1",
+  "description": "Create a simple Figma plugin UI with zero UI code.",
+  "keywords": [
+    "figma",
+    "plugin",
+    "ui"
+  ],
+  "author": "John Dunning",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fwextensions/fwidgets.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fwextensions/fwidgets/issues"
+  },
+  "homepage": "https://github.com/fwextensions/fwidgets#readme",
   "dependencies": {
     "@create-figma-plugin/ui": "^2.6.1",
     "@create-figma-plugin/utilities": "^2.6.1",

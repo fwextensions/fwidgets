@@ -4,6 +4,8 @@ import { useCallback, useState } from "preact/hooks";
 import { TextboxColor, useInitialFocus } from "@create-figma-plugin/ui";
 import InlineWidget from "@/components/InlineWidget";
 
+const DefaultRGBA = { r: 0, g: 0, b: 0, a: 1 };
+
 interface InputColorProps {
 	confirm: (color: RGBA) => void;
 	disabled?: boolean;
@@ -22,7 +24,7 @@ export default function InputColor({
 {
 	const [hexColor, setHexColor] = useState<string>("000000");
 	const [opacity, setOpacity] = useState<string>("100%");
-	const [rgbaColor, setRgbaColor] = useState<RGBA | null>(null);
+	const [rgbaColor, setRgbaColor] = useState<RGBA | null>(DefaultRGBA);
 	const initialFocus = useInitialFocus();
 
 	const handleHexColorInput = (event: JSX.TargetedEvent<HTMLInputElement>) => {
