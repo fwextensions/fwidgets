@@ -1,6 +1,4 @@
-import * as input from "./input";
-import * as output from "./output";
-import * as ui from "./ui";
+import { input, output, ui } from ".";
 
 const Modules = {
 	input,
