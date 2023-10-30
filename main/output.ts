@@ -1,5 +1,5 @@
-import { callFwidgets } from "@/utils";
 import { DeferredPromise } from "figma-await-call";
+import { callFwidgets } from "./callFwidgets";
 
 export function clipboard(
 	text: string): DeferredPromise<undefined>

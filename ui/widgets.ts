@@ -1,12 +1,12 @@
 import { h } from "preact";
 import { DeferredPromise } from "figma-await-call";
-import InputButtons from "@/components/InputButtons";
-import InputColor from "@/components/InputColor";
-import InputDropdown from "@/components/InputDropdown";
-import InputNumber from "@/components/InputNumber";
-import InputText from "@/components/InputText";
-import OutputClipboard from "@/components/OutputClipboard";
-import OutputText from "@/components/OutputText";
+import InputButtons from "./components/InputButtons";
+import InputColor from "./components/InputColor";
+import InputDropdown from "./components/InputDropdown";
+import InputNumber from "./components/InputNumber";
+import InputText from "./components/InputText";
+import OutputClipboard from "./components/OutputClipboard";
+import OutputText from "./components/OutputText";
 
 const componentList = [
 	InputButtons,

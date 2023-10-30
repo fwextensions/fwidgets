@@ -7,18 +7,18 @@ import {
 	useInitialFocus
 } from "@create-figma-plugin/ui";
 import classnames from "classnames/bind";
-import Label from "@/components/Label";
-import styles from "./InputButtons.css";
+import Label from "./Label";
+import styles from "./InputButtons.module.css";
 
 interface ButtonProps {
 	label: string;
-	value?: any;
+	value?: unknown;
 }
 
 interface InputButtonProps {
 	confirm: (text: string) => void;
 	buttons: string[];
-//	buttons: (string|ButtonProps)[];
+//	buttons: (string | ButtonProps)[];
 	disabled?: boolean;
 	label?: string;
 }

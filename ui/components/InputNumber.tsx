@@ -1,28 +1,40 @@
 import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
-import { Textbox, useInitialFocus } from "@create-figma-plugin/ui";
-import InlineWidget from "@/components/InlineWidget";
+import { TextboxNumeric, useInitialFocus } from "@create-figma-plugin/ui";
+import InlineWidget from "./InlineWidget";
 
-interface InputTextProps {
-	confirm: (text: string) => void;
+interface InputNumberProps {
+	confirm: (value: number) => void;
 	disabled?: boolean;
 	label?: string;
-	defaultText?: string;
+	defaultValue?: string;
 	placeholder?: string;
+	suffix?: string;
+	incrementSmall?: number;
+	incrementBig?: number;
+	minimum?: number;
+	maximum?: number;
+	integer?: boolean;
 	focused?: boolean;
 }
 
-export default function InputText({
+export default function InputNumber({
 		confirm,
 		disabled = false,
 		label = "",
-		defaultText = "",
-		placeholder = "",
+		defaultValue = "",
+		placeholder,
+		suffix,
+		incrementSmall,
+		incrementBig,
+		minimum,
+		maximum,
+		integer = false,
 		focused = false,
-	}: InputTextProps)
+	}: InputNumberProps)
 {
-	const [value, setValue] = useState(defaultText);
+	const [value, setValue] = useState(defaultValue);
 	const initialFocus = useInitialFocus();
 
 	const handleInput = useCallback(
@@ -31,17 +43,8 @@ export default function InputText({
 	);
 
 	const handleConfirm = useCallback(
-		() => confirm(value),
+		() => confirm(parseFloat(value)),
 		[value]
-	);
-
-	const handleKeyDown = useCallback(
-		(event: JSX.TargetedKeyboardEvent<HTMLInputElement>) => {
-			if (event.key === "Enter" && value) {
-				handleConfirm();
-			}
-		},
-		[handleConfirm]
 	);
 
 	return (
@@ -51,14 +54,19 @@ export default function InputText({
 			nextEnabled={!!value}
 			onNextClick={handleConfirm}
 		>
-			<Textbox
+			<TextboxNumeric
 				variant="border"
 				disabled={disabled}
 				value={value}
 				placeholder={placeholder}
 				{...(focused ? initialFocus : {})}
+				suffix={suffix}
+				incrementSmall={incrementSmall}
+				incrementBig={incrementBig}
+				minimum={minimum}
+				maximum={maximum}
+				integer={integer}
 				onInput={handleInput}
-				onKeyDown={handleKeyDown}
 			/>
 		</InlineWidget>
 	);

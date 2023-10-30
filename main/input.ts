@@ -1,4 +1,4 @@
-import { callFwidgets } from "@/utils";
+import { callFwidgets } from "./callFwidgets";
 
 export function buttons(
 	label: string,

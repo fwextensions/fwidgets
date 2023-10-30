@@ -3,9 +3,14 @@
   "compilerOptions": {
     "target":"ES2022",
     "typeRoots": ["node_modules/@figma", "node_modules/@types"],
-    "paths": {
-      "@/*": ["./src/fwidgets/*"]
-    }
+    "declaration": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "outDir": "dist"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": [
+    "main",
+    "shared",
+    "ui"
+  ]
 }

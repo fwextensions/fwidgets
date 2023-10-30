@@ -1,10 +1,12 @@
 .DS_Store
 *.log
-*.css.d.ts
 build/
+build */
+dist/
+dist */
 node_modules/
 manifest.json
+*.tgz
 
-.editorconfig
 .idea
 .vscode

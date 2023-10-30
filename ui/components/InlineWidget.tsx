@@ -1,7 +1,7 @@
 import { ComponentChildren, h, JSX } from "preact";
 import { Inline, Stack } from "@create-figma-plugin/ui";
-import Label from "@/components/Label";
-import NextButton from "@/components/NextButton";
+import Label from "./Label";
+import NextButton from "./NextButton";
 
 interface InlineWidgetProps {
 	label?: string,

@@ -1,4 +1,6 @@
-import { input, output, ui } from ".";
+import * as input from "./input";
+import * as output from "./output";
+import * as ui from "./ui";
 
 const Modules = {
 	input,
@@ -8,7 +10,7 @@ const Modules = {
 
 type MainFunction = (modules: typeof Modules) => Promise<string|void>;
 
-export default function fwidgets(
+export function fwidgets(
 	main: MainFunction)
 {
 		// use a then handler so we don't have to make fwidgets an async function

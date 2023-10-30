@@ -1,6 +1,6 @@
-import { show } from "@/ui";
 import { call } from "figma-await-call";
-import { FwidgetsCall } from "@/constants";
+import { FwidgetsCall } from "../shared/constants";
+import { show } from "./ui";
 
 export function callFwidgets<T = string>(
 	type: string,

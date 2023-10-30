@@ -7,8 +7,8 @@ import {
 } from "preact/hooks";
 import { Container, Stack, VerticalSpace } from "@create-figma-plugin/ui";
 import { receive } from "figma-await-call";
-import { FwidgetsCall } from "@/constants";
-import { createWidgetSpec, createWidgetElement, WidgetSpec } from "@/widgets";
+import { FwidgetsCall } from "../../shared/constants";
+import { createWidgetSpec, createWidgetElement, WidgetSpec } from "../widgets";
 
 function disable(
 	widgets: WidgetSpec[])

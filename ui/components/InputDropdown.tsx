@@ -2,7 +2,7 @@ import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
 import { Dropdown } from "@create-figma-plugin/ui";
-import InlineWidget from "@/components/InlineWidget";
+import InlineWidget from "./InlineWidget";
 
 interface InputDropdownProps {
 	confirm: (text: string) => void;
