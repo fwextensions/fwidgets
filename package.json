@@ -37,11 +37,11 @@
   "peerDependencies": {
     "@create-figma-plugin/ui": "^2.6.1",
     "@create-figma-plugin/utilities": "^2.6.1",
-    "preact": "^10"
+    "preact": "^10.18.1"
   },
   "devDependencies": {
     "@create-figma-plugin/tsconfig": "^2.6.1",
     "@figma/plugin-typings": "1.80.0",
-    "typescript": "^5"
+    "typescript": "^5.2.2"
   }
 }
