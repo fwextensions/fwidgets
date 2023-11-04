@@ -27,20 +27,25 @@
     "./main": "./main/index.ts",
     "./ui": "./ui/index.ts"
   },
+  "workspaces": [
+    "./test"
+  ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "npm run build -w test",
+    "test:dev": "npm run dev -w test"
   },
   "dependencies": {
     "classnames": "^2.3.2",
     "figma-await-call": "0.0.2"
   },
   "peerDependencies": {
-    "@create-figma-plugin/ui": "^2.6.1",
-    "@create-figma-plugin/utilities": "^2.6.1",
+    "@create-figma-plugin/ui": "^3.0.2",
+    "@create-figma-plugin/utilities": "^3.0.2",
     "preact": "^10.18.1"
   },
   "devDependencies": {
-    "@create-figma-plugin/tsconfig": "^2.6.1",
+    "@create-figma-plugin/tsconfig": "^3.0.2",
     "@figma/plugin-typings": "1.80.0",
     "typescript": "^5.2.2"
   }

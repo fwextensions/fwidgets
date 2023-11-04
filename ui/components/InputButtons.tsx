@@ -1,5 +1,6 @@
 import { h } from "preact";
-import { useState } from "preact/hooks";
+import JSX = h.JSX;
+import { useCallback, useState } from "preact/hooks";
 import {
 	Button,
 	Inline,
@@ -16,7 +17,7 @@ interface ButtonProps {
 }
 
 interface InputButtonProps {
-	confirm: (text: string) => void;
+	confirm: (text: string | null) => void;
 	buttons: string[];
 //	buttons: (string | ButtonProps)[];
 	disabled?: boolean;
@@ -35,10 +36,22 @@ export default function InputButtons({
 	const [selectedLabel, setSelectedLabel] = useState("");
 	const initialFocus = useInitialFocus();
 
-	const handleClick = (label: string) => {
-		setSelectedLabel(label);
-		confirm(label);
-	};
+	const handleClick = useCallback(
+		(label: string) => {
+			setSelectedLabel(label);
+			confirm(label);
+		},
+		[]
+	);
+
+	const handleKeyDown = useCallback(
+		(event: JSX.TargetedKeyboardEvent<HTMLInputElement>) => {
+			if (event.key === "Escape") {
+				confirm(null);
+			}
+		},
+		[]
+	);
 
 	const buttonElements = buttons.map((label, i) => (
 		<Button class={cx("inputButton", { "selected": label === selectedLabel })}
@@ -58,7 +71,9 @@ export default function InputButtons({
 				text={label}
 				disabled={disabled}
 			/>
-			<Inline space="extraSmall">
+			<Inline space="extraSmall"
+				onKeyDown={!disabled ? handleKeyDown : undefined}
+			>
 				{buttonElements}
 			</Inline>
 		</Stack>

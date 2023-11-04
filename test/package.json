@@ -1,0 +1,29 @@
+{
+  "name": "test",
+  "scripts": {
+    "build": "build-figma-plugin --typecheck --minify",
+    "build:nomin": "build-figma-plugin --typecheck",
+    "dev": "build-figma-plugin --watch"
+  },
+  "dependencies": {
+    "@create-figma-plugin/ui": "^3.0.2",
+    "@create-figma-plugin/utilities": "^3.0.2",
+    "fwidgets": "file:..",
+    "preact": "^10.18.1"
+  },
+  "devDependencies": {
+    "@create-figma-plugin/build": "^3.0.2",
+    "@create-figma-plugin/tsconfig": "^3.0.2",
+    "@figma/plugin-typings": "1.80.0",
+    "typescript": "^5.2.2"
+  },
+  "figma-plugin": {
+    "editorType": [
+      "figma"
+    ],
+    "id": "fwidgetsTestPlugin",
+    "name": "Fwidgets Test Plugin",
+    "main": "src/main.ts",
+    "ui": "src/ui.tsx"
+  }
+}

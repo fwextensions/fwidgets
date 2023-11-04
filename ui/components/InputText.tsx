@@ -5,7 +5,7 @@ import { Textbox, useInitialFocus } from "@create-figma-plugin/ui";
 import InlineWidget from "./InlineWidget";
 
 interface InputTextProps {
-	confirm: (text: string) => void;
+	confirm: (text: string | null) => void;
 	disabled?: boolean;
 	label?: string;
 	defaultText?: string;
@@ -24,6 +24,7 @@ export default function InputText({
 {
 	const [value, setValue] = useState(defaultText);
 	const initialFocus = useInitialFocus();
+	const isValueValid = !!value;
 
 	const handleInput = useCallback(
 		(event: JSX.TargetedEvent<HTMLInputElement>) => setValue(event.currentTarget.value),
@@ -31,14 +32,16 @@ export default function InputText({
 	);
 
 	const handleConfirm = useCallback(
-		() => confirm(value),
+		() => isValueValid && confirm(value),
 		[value]
 	);
 
 	const handleKeyDown = useCallback(
 		(event: JSX.TargetedKeyboardEvent<HTMLInputElement>) => {
-			if (event.key === "Enter" && value) {
+			if (event.key === "Enter") {
 				handleConfirm();
+			} else if (event.key === "Escape") {
+				confirm(null);
 			}
 		},
 		[handleConfirm]
@@ -48,7 +51,7 @@ export default function InputText({
 		<InlineWidget
 			label={label}
 			disabled={disabled}
-			nextEnabled={!!value}
+			nextEnabled={isValueValid}
 			onNextClick={handleConfirm}
 		>
 			<Textbox

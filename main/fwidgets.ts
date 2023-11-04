@@ -13,8 +13,10 @@ type MainFunction = (modules: typeof Modules) => Promise<string|void>;
 export function fwidgets(
 	main: MainFunction)
 {
-		// use a then handler so we don't have to make fwidgets an async function
-	main(Modules)
+		// wrap the call to the user's function in another function, so they can
+		// just use `export default fwidgets(...)`
+	return () => main(Modules)
+			// use a then handler so we don't have to make fwidgets an async function
 		.then((result) => figma.closePlugin(result ?? ""))
-		.catch((error) => figma.closePlugin(error));
+		.catch((error) => figma.closePlugin(error.message));
 }

@@ -5,7 +5,7 @@ import { TextboxNumeric, useInitialFocus } from "@create-figma-plugin/ui";
 import InlineWidget from "./InlineWidget";
 
 interface InputNumberProps {
-	confirm: (value: number) => void;
+	confirm: (value: number | null) => void;
 	disabled?: boolean;
 	label?: string;
 	defaultValue?: string;
@@ -23,19 +23,20 @@ export default function InputNumber({
 		confirm,
 		disabled = false,
 		label = "",
-		defaultValue = "",
 		placeholder,
 		suffix,
 		incrementSmall,
 		incrementBig,
 		minimum,
 		maximum,
+		defaultValue = Number.isFinite(minimum) ? String(minimum) : "",
 		integer = false,
 		focused = false,
 	}: InputNumberProps)
 {
 	const [value, setValue] = useState(defaultValue);
 	const initialFocus = useInitialFocus();
+	const isValueValid = !!value;
 
 	const handleInput = useCallback(
 		(event: JSX.TargetedEvent<HTMLInputElement>) => setValue(event.currentTarget.value),
@@ -43,15 +44,26 @@ export default function InputNumber({
 	);
 
 	const handleConfirm = useCallback(
-		() => confirm(parseFloat(value)),
+		() => isValueValid && confirm(parseFloat(value)),
 		[value]
+	);
+
+	const handleKeyDown = useCallback(
+		(event: JSX.TargetedKeyboardEvent<HTMLInputElement>) => {
+			if (event.key === "Enter") {
+				handleConfirm();
+			} else if (event.key === "Escape") {
+				confirm(null);
+			}
+		},
+		[handleConfirm]
 	);
 
 	return (
 		<InlineWidget
 			label={label}
 			disabled={disabled}
-			nextEnabled={!!value}
+			nextEnabled={isValueValid}
 			onNextClick={handleConfirm}
 		>
 			<TextboxNumeric
@@ -67,6 +79,7 @@ export default function InputNumber({
 				maximum={maximum}
 				integer={integer}
 				onInput={handleInput}
+				onKeyDown={handleKeyDown}
 			/>
 		</InlineWidget>
 	);

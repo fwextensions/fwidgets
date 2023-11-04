@@ -7,7 +7,7 @@ import InlineWidget from "./InlineWidget";
 const DefaultRGBA = { r: 0, g: 0, b: 0, a: 1 };
 
 interface InputColorProps {
-	confirm: (color: RGBA) => void;
+	confirm: (color: RGBA | null) => void;
 	disabled?: boolean;
 	placeholder?: string;
 	label?: string;
@@ -26,6 +26,7 @@ export default function InputColor({
 	const [opacity, setOpacity] = useState<string>("100%");
 	const [rgbaColor, setRgbaColor] = useState<RGBA | null>(DefaultRGBA);
 	const initialFocus = useInitialFocus();
+	const isValueValid = !!rgbaColor;
 
 	const handleHexColorInput = (event: JSX.TargetedEvent<HTMLInputElement>) => {
 		setHexColor(event.currentTarget.value);
@@ -40,15 +41,26 @@ export default function InputColor({
 	};
 
 	const handleConfirm = useCallback(
-		() => rgbaColor && confirm(rgbaColor),
+		() => isValueValid && confirm(rgbaColor),
 		[hexColor, opacity]
+	);
+
+	const handleKeyDown = useCallback(
+		(event: JSX.TargetedKeyboardEvent<HTMLInputElement>) => {
+			if (event.key === "Enter") {
+				handleConfirm();
+			} else if (event.key === "Escape") {
+				confirm(null);
+			}
+		},
+		[handleConfirm]
 	);
 
 	return (
 		<InlineWidget
 			label={label}
 			disabled={disabled}
-			nextEnabled={!!(rgbaColor)}
+			nextEnabled={isValueValid}
 			onNextClick={handleConfirm}
 		>
 			<TextboxColor
@@ -61,6 +73,8 @@ export default function InputColor({
 				onHexColorInput={handleHexColorInput}
 				onOpacityInput={handleOpacityInput}
 				onRgbaColorValueInput={handleRGBAInput}
+				onHexColorKeyDown={handleKeyDown}
+				onOpacityKeyDown={handleKeyDown}
 			/>
 		</InlineWidget>
 	);

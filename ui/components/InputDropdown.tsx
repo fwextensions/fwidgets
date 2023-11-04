@@ -1,7 +1,7 @@
 import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
-import { Dropdown } from "@create-figma-plugin/ui";
+import { Dropdown, useInitialFocus } from "@create-figma-plugin/ui";
 import InlineWidget from "./InlineWidget";
 
 interface InputDropdownProps {
@@ -10,6 +10,7 @@ interface InputDropdownProps {
 	disabled?: boolean;
 	placeholder?: string;
 	label?: string;
+	focused?: boolean;
 }
 
 export default function InputDropdown({
@@ -18,16 +19,19 @@ export default function InputDropdown({
 		disabled = false,
 		placeholder = "Select an item",
 		label = "",
+		focused = false,
 	}: InputDropdownProps)
 {
 	const [value, setValue] = useState<string|null>(null);
+	const initialFocus = useInitialFocus();
+	const isValueValid = !!value;
 
 	const handleChange = (event: JSX.TargetedEvent<HTMLInputElement>) => {
     setValue(event.currentTarget.value);
   };
 
 	const handleConfirm = useCallback(
-		() => confirm(value ?? ""),
+		() => isValueValid && confirm(value ?? ""),
 		[value]
 	);
 
@@ -35,7 +39,7 @@ export default function InputDropdown({
 		<InlineWidget
 			label={label}
 			disabled={disabled}
-			nextEnabled={!!value}
+			nextEnabled={isValueValid}
 			onNextClick={handleConfirm}
 		>
 			<Dropdown
@@ -44,6 +48,7 @@ export default function InputDropdown({
 				options={options.map((value) => ({ value }))}
 				value={value}
 				placeholder={placeholder}
+				{...(focused ? initialFocus : {})}
 				onChange={handleChange}
 			/>
 		</InlineWidget>
