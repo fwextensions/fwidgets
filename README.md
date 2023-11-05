@@ -2,9 +2,12 @@
 
 > Create a simple Figma plugin UI with zero UI code.
 
-Many useful Figma plugins run only in the main thread, where they can access the API and modify the document.  But sometimes you'll want to extend them with simple user interface elements, like a textbox to enter a name, or a color picker to customize the output.  Unfortunately, Figma doesn't offer any built-in UI components, so you have to roll your own, using a framework like React, and then post messages to the main thread in order to interact with the API.
+![screenshot](https://user-images.githubusercontent.com/61631/280552964-f63c103e-61db-4b7b-8610-2116613e665d.png)
+
+Many useful Figma plugins run only in the main thread, where they can access the API and modify the document.  But sometimes you'll want to extend them with simple user interface elements, like a textbox to enter a name, or a color picker to customize the output.  Unfortunately, Figma doesn't offer any built-in UI components, so you have to roll your own, using a framework or vanilla JS/HTML/CSS, and then post messages to the main thread so that your UI can actually interact with the API.
 
 `fwidgets` is intended to dramatically simplify this process by letting you add basic UI functionality without writing any UI code.  Think of it like adding a series of interactive prompts to a command line tool, similar to the wizard structure of something like `create-react-app`.  `fwidgets` lets you show one UI element at a time to the user, awaiting their input and then responding to it.
+
 
 
 ## Install
@@ -22,12 +25,12 @@ Replace `my-plugin-name` with whatever you want to call the directory for your p
 
 Once the plugin skeleton has been created, open its `package.json` and edit this section to customize the `id` and `name` of your plugin:
 
-```json
-  "figma-plugin": {
-    "id": "fwidgetsPluginTemplate",
-    "name": "Fwidgets Plugin Template",
-    ...
-  }
+```
+"figma-plugin": {
+  "id": "fwidgetsPluginTemplate",
+  "name": "Fwidgets Plugin Template",
+  ...
+}
 ```
 
 Then open a terminal and execute `npm run dev` to start a process that rebuilds the plugin whenever files in the `src` directory change.  (The template uses the excellent [`create-figma-plugin`](https://github.com/yuanqing/create-figma-plugin) tool to build and package the plugin.)
@@ -37,25 +40,25 @@ In Figma, go to *Plugins > Development > Import plugin from manifest...* and sel
 
 ### Awaiting user input
 
-Open `src/main.ts` to see the sample code.  All of it is contained within an async function that's passed to `fwidgets()`, whose return value is then exported as the default for this module.
+Open `src/main.ts` to see the sample code.  Most of it is contained within an async function that's passed to `fwidgets()`, whose return value is then exported as the default for this module.
 
 A typical use of the API looks like this:
 
 ```typescript
 export default fwidgets(async ({ input, output, ui }) => {
-	// ...
-	const count = await input.number("Number of rectangles:", {
-		placeholder: "Count",
-		minimum: 1,
-		maximum: 10,
-		integer: true
-	});
+  // ...
+  const count = await input.number("Number of rectangles:", {
+    placeholder: "Count",
+    minimum: 1,
+    maximum: 10,
+    integer: true
+  });
 });
 ```
 
 You make a call to an `input` method like `number()`, which will show a numeric entry field in the plugin window.  Pass the method a label string and any options needed for that UI element.
 
-Since you're waiting for the user to enter something, you have to `await` the `input.number()` call so that your main thread pauses until a value is returned.  The user can click the *Next* button next to the input to submit the value, or press `enter`.  If the user clicks the plugin window's close box or presses `escape`, the plugin execution will immediately stop, much like a CLI process getting killed.
+Since you're waiting for the user to enter something, you have to `await` the `input.number()` call so that your main thread pauses until a value is returned.  The user can click the *Next* button next to the input to submit the value, or press <kbd>enter</kbd>.  If the user clicks the plugin window's close box or presses <kbd>escape</kbd>, the plugin execution will immediately stop, much like a CLI process getting killed.
 
 The key difference between using `fwidgets` to show a user interface vs. building it in the UI thread is that the main thread is in control and runs from beginning to end, like a typical script.  It may hand off control to the UI thread to get some user input, but it decides when to do that, rather than responding to events sent via `postMessage()`.
 
@@ -66,7 +69,7 @@ Try changing one of the strings that supplies a UI label and save the file to re
 
 That's it! The whole workflow is basically just adding some code inside the call to `fwidgets()` in `main.ts`, saving the file, and then testing the plugin in Figma.
 
-Note that you shouldn't edit the `ui.tsx` file, which is there just to set up the code that listens for calls from the main thread and to then render the requested UI element.  (If you know what you're doing, you could add some static elements around the core `<Fwidgets />` component, but that's left as an exercise for the reader.)
+Note that you shouldn't edit the `ui.tsx` file, which is there just to set up the Preact code that listens for calls from the main thread and to then render the requested UI element.  (If you know what you're doing, you could add some static elements around the core `<Fwidgets />` component, but that's left as an exercise for the reader.)
 
 
 ## API
@@ -79,20 +82,23 @@ This is the only function you need to import.  Pass it an async function contain
 import { fwidgets } from "fwidgets/main";
 
 export default fwidgets(async ({ input, output, ui }) => {
-	// add your plugin code here
+  // add your plugin code here
 });
 ```
 
 You can import code from other modules, and even make API calls before calling `fwidgets()`.  But it should only be called once, since it calls `figma.closePlugin()` before returning, which will disable the Figma APIs.
 
-Your function will be passed an object containing the `input`, `output` and `ui` APIs that can be used to render UI elements and control the plugin window.
+Your function will be passed an object containing the [`input`](#input), [`output`](#output) and [`ui`](#ui) APIs that can be used to render UI elements and control the plugin window.
+
+
+<hr>
 
 
 ### `input`
 
-All of the `input` methods listed below, except for `buttons()`, display a button labeled *Next* to the right of the UI element.  The user clicks that to confirm the value and move to the next step, and which is when the awaited method call returns with the value.
+All of the `input` methods listed below, except for `buttons()`, display a button labeled *Next* to the right of the UI element.  The user clicks that to confirm the value and move to the next step, which is when the awaited method call returns with the value.  The user can also press <kbd>enter</kbd> to confirm the value, or press <kbd>escape</kbd> to close the plugin and stop its execution.
 
-For any of the label parameters below, pass an empty string to not show a label at all.
+For any of the label parameters below, pass an empty string to not take up any space for a label at all.
 
 Calling one of these methods will automatically show the plugin window if it's not currently open or visible.
 
@@ -106,6 +112,12 @@ Shows a list of push buttons.
 
 Returns the label of the button that was clicked.
 
+![buttons screenshot](https://user-images.githubusercontent.com/61631/280553231-bbff221d-5b25-43fa-9672-550f3f493273.png)
+
+```typescript
+const btn = await input.buttons("Continue?", ["Create Rectangles", "Cancel"]);
+```
+
 
 #### `color(label, options?)`
 
@@ -115,7 +127,15 @@ Shows a color picker.  The picker consists of a color swatch that can be clicked
 - `options`:
   - `placeholder`: A string to show when the hex input is empty.
 
-Returns an `{ a, r, g, b }` object containing the alpha, red, green and blue components of the selected color.  If you just need the RGB components, you can extract them with the rest operator like this:
+Returns an `{ a, r, g, b }` object containing the alpha, red, green and blue components of the selected color.
+
+![color screenshot](https://user-images.githubusercontent.com/61631/280553180-2e416d19-b453-4c1a-ba2c-33d2a23d7c09.png)
+
+```typescript
+const argb = await input.color("Rectangle fill color:");
+```
+
+If you just need the RGB components, you can extract them with the rest operator like this:
 
 ```typescript
 const { a, ...rgb } = await input.color("Enter a color:")
@@ -135,6 +155,12 @@ Shows a dropdown menu.
 
 Returns the label of the menu item that was selected.
 
+![dropdown screenshot](https://user-images.githubusercontent.com/61631/280553519-3b2eaa6c-966a-4c82-b918-38c0824ac510.png)
+
+```typescript
+const align = await input.dropdown("Text alignment:", ["left", "center", "right"]);
+```
+
 
 #### `number(label, options?)`
 
@@ -153,8 +179,13 @@ Shows a numeric entry field.
 
 Returns the number that was entered.
 
+![number screenshot](https://user-images.githubusercontent.com/61631/280553210-ce887bee-2fc7-4994-9cd2-b089456e9903.png)
 
-#### `pages(label?, options?)`
+```typescript
+const count = await input.number("Number of rectangles:", { integer: true });
+```
+
+#### `page(label?, options?)`
 
 Shows a dropdown menu of all the pages in the current Figma document.
 
@@ -164,10 +195,16 @@ Shows a dropdown menu of all the pages in the current Figma document.
 
 Returns the `PageNode` of the selected page.
 
+![page screenshot](https://user-images.githubusercontent.com/61631/280553620-24ff03a1-cd02-4e3f-a078-3c923bffcd92.png)
+
+```typescript
+const selectedPage = await input.page();
+```
+
 
 #### `text(label, options?)`
 
-Shows a text entry field.
+Shows a single-line text entry field.
 
 - `label`: The label to show above the entry field.
 - `options`:
@@ -175,10 +212,19 @@ Shows a text entry field.
 
 Returns the string that was entered.
 
+![text screenshot](https://user-images.githubusercontent.com/61631/280553453-11358bc6-29e4-421a-a1bd-8ed44eba5c95.png)
+
+```typescript
+const title = await input.text("Enter a title:");
+```
+
+
+<hr>
+
 
 ### `output`
 
-The `output` methods listed below return a promise that resolves to `undefined`, but you still need to await them to give them time to update the UI side of the plugin.
+The `output` methods listed below return a promise that resolves to `undefined`, but you still need to await the response to give them time to update the plugin UI before returning.
 
 
 #### `clipboard(value)`
@@ -186,6 +232,10 @@ The `output` methods listed below return a promise that resolves to `undefined`,
 Copies a string version of `value` to the clipboard.  If `value` is a non-null object, then it will be converted to formatted JSON before copying.
 
 - `value`: The data to copy to the user's clipboard.
+
+```typescript
+await output.clipboard(figma.currentPage.selection[0].fills);
+```
 
 
 #### `text(string, options?)`
@@ -196,6 +246,18 @@ Displays static text that can wrap to multiple lines.
 - `options`:
   - `align`: Control the alignment of the text by passing `"left"|"center"|"right"`.
   - `numeric`: A boolean controlling whether the text is rendered with monospaced numerals.
+
+![text screenshot](https://user-images.githubusercontent.com/61631/280554012-6625df86-06ca-456f-8afa-38ae01fef893.png)
+
+```typescript
+await output.text(`Export preview:
+Color: #cc3300
+Rectangle count: 5
+Format: JSON`);
+```
+
+
+<hr>
 
 
 ### `ui`
@@ -208,6 +270,8 @@ Hides the plugin window if it's currently open, but does not close it or end plu
 #### `setSize(size)`
 
 Sets the plugin window size, but does not show it if it's not currently visible.
+
+The plugin window defaults to 300px wide by 200px tall.
 
 - `size`:
   - `width`: The desired `width` in px.
@@ -225,7 +289,7 @@ Opens or shows the plugin window, and sets it to the specified size, if one is s
 
 ## Credits
 
-The idea for `fwidgets` was inspired by the [Airtable scripting API](https://airtable.com/developers/scripting/api), which is generally terrible except for its `input` and `output` methods.  They're a clever solution to including interactive UI elements in a script without having to stand up a full event-driven architecture.
+The idea for `fwidgets` was inspired by the [Airtable scripting API](https://airtable.com/developers/scripting/api), which is generally terrible except for its `input` and `output` methods.  They're a clever solution to including interactive UI elements in a script without having to build a full event-driven app architecture.
 
 This package uses [`create-figma-plugin`](https://github.com/yuanqing/create-figma-plugin) for the [UI components](https://yuanqing.github.io/create-figma-plugin/ui/) and for building the plugin.
 

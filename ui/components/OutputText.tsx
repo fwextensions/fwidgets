@@ -8,6 +8,7 @@ const TextStyle = {
 	userSelect: "text",
 	pointerEvents: "auto",
 	cursor: "auto",
+	whiteSpace: "pre-wrap",
 };
 
 interface OutputTextProps {

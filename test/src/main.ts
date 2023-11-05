@@ -1,8 +1,30 @@
 import { fwidgets } from "fwidgets/main";
 
-// all of your plugin code should be in the callback passed to fwidgets().  your
-// callback will be passed input, output and ui modules that contain functions
-// you can use to display UI controls for the plugin, one at a time.
+function createRectangles(
+	count: number,
+	color: RGB)
+{
+	const nodes: Array<SceneNode> = [];
+
+	for (let i = 0; i < count; i++) {
+		const rect = figma.createRectangle();
+
+		rect.x = figma.viewport.center.x + i * 150;
+		rect.fills = [{ type: "SOLID", color }];
+		figma.currentPage.appendChild(rect);
+		nodes.push(rect);
+	}
+
+	figma.currentPage.selection = nodes;
+	figma.viewport.scrollAndZoomIntoView(nodes);
+
+	return nodes;
+}
+
+// all of the code that interacts with the plugin UI should be triggered from
+// within the callback passed to fwidgets(), since the plugin window is closed
+// when the callback returns.  it will be passed input, output and ui modules
+// that contain functions you can use to display UI controls, one at a time.
 export default fwidgets(async ({ input, output, ui }) => {
 	// you can set the size of the plugin window
 	ui.setSize({
@@ -28,26 +50,15 @@ export default fwidgets(async ({ input, output, ui }) => {
 	]);
 
 	if (button === "Cancel") {
+		// returning from this function automatically closes the plugin window
 		return;
 	}
 
-	const nodes: Array<SceneNode> = [];
-
 	// create the rectangles with the color and number specified by the user
-	for (let i = 0; i < count; i++) {
-		const rect = figma.createRectangle();
+	const rects = createRectangles(count, rgb);
 
-		rect.x = figma.viewport.center.x + i * 150;
-		rect.fills = [{ type: "SOLID", color: rgb }];
-		figma.currentPage.appendChild(rect);
-		nodes.push(rect);
-	}
-
-	figma.currentPage.selection = nodes;
-	figma.viewport.scrollAndZoomIntoView(nodes);
-
-	// collect the position and size of each rectangle
-	const rectInfo = nodes.map(({ x, y, width: w, height: h }) => ({ x, y, w, h }));
+	// collect the position and size of each rectangle node
+	const rectInfo = rects.map(({ x, y, width: w, height: h }) => ({ x, y, w, h }));
 
 	// copy the info to the clipboard as JSON
 	await output.clipboard(rectInfo);
