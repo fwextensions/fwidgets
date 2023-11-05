@@ -17,10 +17,10 @@ export function color(
 
 export function dropdown(
 	label: string,
-	optionItems: string[],
+	items: string[],
 	options: object = {})
 {
-	return callFwidgets("InputDropdown", { ...options, label, options: optionItems });
+	return callFwidgets("InputDropdown", { ...options, label, options: items });
 }
 
 export function number(

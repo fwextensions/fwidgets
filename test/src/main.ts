@@ -22,9 +22,12 @@ export default fwidgets(async ({ input, output, ui }) => {
 	});
 
 	// let the user cancel before creating any rectangles
-	const buttonName = await input.buttons("Continue?", ["Create Rectangles", "Cancel"]);
+	const button = await input.buttons("Continue?", [
+		"Create Rectangles",
+		"Cancel"
+	]);
 
-	if (buttonName === "Cancel") {
+	if (button === "Cancel") {
 		return;
 	}
 
@@ -46,8 +49,8 @@ export default fwidgets(async ({ input, output, ui }) => {
 	// collect the position and size of each rectangle
 	const rectInfo = nodes.map(({ x, y, width: w, height: h }) => ({ x, y, w, h }));
 
-	// convert that info to JSON and copy it to the clipboard
-	await output.clipboard(JSON.stringify(rectInfo, null, 2));
+	// copy the info to the clipboard as JSON
+	await output.clipboard(rectInfo);
 
 	// return a message to show in a toast after the plugin closes
 	return `${count} rectangles copied to the clipboard.`

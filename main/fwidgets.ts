@@ -8,7 +8,7 @@ const Modules = {
 	ui,
 } as const;
 
-type MainFunction = (modules: typeof Modules) => Promise<string|void>;
+type MainFunction = (modules: typeof Modules) => Promise<string | void>;
 
 export function fwidgets(
 	main: MainFunction)
@@ -18,5 +18,13 @@ export function fwidgets(
 	return () => main(Modules)
 			// use a then handler so we don't have to make fwidgets an async function
 		.then((result) => figma.closePlugin(result ?? ""))
-		.catch((error) => figma.closePlugin(error.message));
+		.catch((error) => {
+			if (error?.message) {
+					// this isn't empty error thrown by canceling, so write it to the
+					// console so the user can see it
+				console.error(`Uncaught exception handled in fwidgets():\n${error}`);
+			}
+
+			figma.closePlugin(error.message);
+		});
 }

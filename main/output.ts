@@ -1,15 +1,20 @@
-import { DeferredPromise } from "figma-await-call";
 import { callFwidgets } from "./callFwidgets";
 
 export function clipboard(
-	text: string): DeferredPromise<undefined>
+	value: unknown)
 {
+	let text = String(value);
+
+	if (value && typeof value === "object") {
+		text = JSON.stringify(value, null, "\t");
+	}
+
 	return callFwidgets<undefined>("OutputClipboard", { text });
 }
 
 export function text(
 	text: unknown,
-	options: object = {}): DeferredPromise<undefined>
+	options: object = {})
 {
 	return callFwidgets<undefined>("OutputText", { ...options, text });
 }
