@@ -2,6 +2,7 @@ import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
 import { Textbox, useInitialFocus } from "@create-figma-plugin/ui";
+import { keepName } from "../utils";
 import InlineWidget from "./InlineWidget";
 
 interface InputTextProps {
@@ -66,3 +67,5 @@ export default function InputText({
 		</InlineWidget>
 	);
 }
+
+keepName(InputText, "InputText");

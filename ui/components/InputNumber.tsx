@@ -2,6 +2,7 @@ import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
 import { TextboxNumeric, useInitialFocus } from "@create-figma-plugin/ui";
+import { keepName } from "../utils";
 import InlineWidget from "./InlineWidget";
 
 interface InputNumberProps {
@@ -84,3 +85,5 @@ export default function InputNumber({
 		</InlineWidget>
 	);
 }
+
+keepName(InputNumber, "InputNumber");

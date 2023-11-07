@@ -124,7 +124,7 @@ const btn = await input.buttons("Continue?", ["Create Rectangles", "Cancel"]);
 Shows a color picker.  The picker consists of a color swatch that can be clicked to show a full color palette, a text area in which a hex value can be entered, and another text area for opacity.
 
 - `label`: The label to show above the color picker.
-- `options`:
+- `options`: An optional object with any of the following keys.
   - `placeholder`: A string to show when the hex input is empty.
 
 Returns an `{ a, r, g, b }` object containing the alpha, red, green and blue components of the selected color.
@@ -150,7 +150,7 @@ Shows a dropdown menu.
 
 - `label`: The label to show above the dropdown menu.
 - `items`: An array of label strings to show in the menu.
-- `options`:
+- `options`: An optional object with any of the following keys.
   - `placeholder`: A string to show when nothing has been selected.
 
 Returns the label of the menu item that was selected.
@@ -167,7 +167,7 @@ const align = await input.dropdown("Text alignment:", ["left", "center", "right"
 Shows a numeric entry field.
 
 - `label`: The label to show above the entry field.
-- `options`:
+- `options`: An optional object with any of the following keys.
   - `placeholder`: A string to show when the field is empty.
   - `defaultValue`: The default value to show.
   - `suffix`: A suffix to show after the entered number, like `"%"`.
@@ -190,7 +190,7 @@ const count = await input.number("Number of rectangles:", { integer: true });
 Shows a dropdown menu of all the pages in the current Figma document.
 
 - `label`: The label to show above the dropdown menu.  Defaults to *Select a page:*.
-- `options`:
+- `options`: An optional object with any of the following keys.
   - `placeholder`: A string to show when nothing has been selected.  Defaults to *Pages*.
 
 Returns the `PageNode` of the selected page.
@@ -207,7 +207,7 @@ const selectedPage = await input.page();
 Shows a single-line text entry field.
 
 - `label`: The label to show above the entry field.
-- `options`:
+- `options`: An optional object with any of the following keys.
   - `placeholder`: A string to show when the field is empty.
 
 Returns the string that was entered.
@@ -243,7 +243,7 @@ await output.clipboard(figma.currentPage.selection[0].fills);
 Displays static text that can wrap to multiple lines.
 
 - `string`: The string to display.
-- `options`:
+- `options`: An optional object with any of the following keys.
   - `align`: Control the alignment of the text by passing `"left"|"center"|"right"`.
   - `numeric`: A boolean controlling whether the text is rendered with monospaced numerals.
 

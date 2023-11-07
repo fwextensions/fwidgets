@@ -8,6 +8,7 @@ import {
 	useInitialFocus
 } from "@create-figma-plugin/ui";
 import classnames from "classnames/bind";
+import { keepName } from "../utils";
 import Label from "./Label";
 import styles from "./InputButtons.module.css";
 
@@ -79,3 +80,5 @@ export default function InputButtons({
 		</Stack>
 	);
 }
+
+keepName(InputButtons, "InputButtons");

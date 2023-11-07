@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { useEffect } from "preact/hooks";
 import { Text } from "@create-figma-plugin/ui";
+import { keepName } from "../utils";
 
 	// we have to set the first two of these properties to override the included
 	// CSS and make the text selectable
@@ -42,3 +43,5 @@ export default function OutputText({
 		</Text>
 	);
 }
+
+keepName(OutputText, "OutputText");

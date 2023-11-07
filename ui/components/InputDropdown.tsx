@@ -2,6 +2,7 @@ import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
 import { Dropdown, useInitialFocus } from "@create-figma-plugin/ui";
+import { keepName } from "../utils";
 import InlineWidget from "./InlineWidget";
 
 interface InputDropdownProps {
@@ -54,3 +55,5 @@ export default function InputDropdown({
 		</InlineWidget>
 	);
 }
+
+keepName(InputDropdown, "InputDropdown");

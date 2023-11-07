@@ -2,6 +2,7 @@ import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
 import { TextboxColor, useInitialFocus } from "@create-figma-plugin/ui";
+import { keepName } from "../utils";
 import InlineWidget from "./InlineWidget";
 
 const DefaultRGBA = { r: 0, g: 0, b: 0, a: 1 };
@@ -79,3 +80,5 @@ export default function InputColor({
 		</InlineWidget>
 	);
 }
+
+keepName(InputColor, "InputColor");

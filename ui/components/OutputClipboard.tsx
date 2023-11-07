@@ -1,4 +1,5 @@
 import { useEffect } from "preact/hooks";
+import { keepName } from "../utils";
 
 function copyTextToClipboard(
 	text: string)
@@ -47,3 +48,5 @@ export default function OutputClipboard({
 
 	return null;
 }
+
+keepName(OutputClipboard, "OutputClipboard");
