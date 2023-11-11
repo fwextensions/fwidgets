@@ -4,10 +4,9 @@
 
 ![screenshot](https://user-images.githubusercontent.com/61631/280552964-f63c103e-61db-4b7b-8610-2116613e665d.png)
 
-Many useful Figma plugins run only in the main thread, where they can access the API and modify the document.  But sometimes you'll want to extend them with simple user interface elements, like a textbox to enter a name, or a color picker to customize the output.  Unfortunately, Figma doesn't offer any built-in UI components, so you have to roll your own, using a framework or vanilla JS/HTML/CSS, and then post messages to the main thread so that your UI can actually interact with the API.
+Many useful Figma plugins run only in the main thread, where they can access the API and modify the document.  But sometimes you want to extend them with simple user interface elements, like a textbox to enter a name, or a color picker to customize the output.  Unfortunately, Figma doesn't offer any built-in UI components, so you have to roll your own, using a framework or vanilla JS/HTML/CSS.  And then you have to post messages back to the main thread in response to UI events, just so your plugin can actually make changes to the Figma document.
 
-`fwidgets` is intended to dramatically simplify this process by letting you add basic UI functionality without writing any UI code.  Think of it like adding a series of interactive prompts to a command line tool, similar to the wizard structure of something like `create-react-app`.  `fwidgets` lets you show one UI element at a time to the user, awaiting their input and then responding to it.
-
+`fwidgets` is intended to dramatically simplify this process by letting you add basic UI functionality without writing any UI code.  Think of it like adding a series of interactive prompts to a command line tool, similar to the wizard structure of something like `create-react-app`.  `fwidgets` lets you show one UI element at a time to the user, awaiting their input and then responding to it, while keeping all of your code in the main thread.
 
 
 ## Install
@@ -90,9 +89,8 @@ You can import code from other modules, and even make API calls before calling `
 
 Your function will be passed an object containing the [`input`](#input), [`output`](#output) and [`ui`](#ui) APIs that can be used to render UI elements and control the plugin window.
 
-
+<br>
 <hr>
-
 
 ### `input`
 
@@ -102,6 +100,7 @@ For any of the label parameters below, pass an empty string to not take up any s
 
 Calling one of these methods will automatically show the plugin window if it's not currently open or visible.
 
+<br>
 
 #### `buttons(label, buttonLabels)`
 
@@ -118,6 +117,7 @@ Returns the label of the button that was clicked.
 const btn = await input.buttons("Continue?", ["Create Rectangles", "Cancel"]);
 ```
 
+<br>
 
 #### `color(label, options?)`
 
@@ -143,6 +143,7 @@ const rect = figma.createRectangle();
 rect.fills = [{ type: "SOLID", color: rgb }];
 ```
 
+<br>
 
 #### `dropdown(label, items, options?)`
 
@@ -161,6 +162,7 @@ Returns the label of the menu item that was selected.
 const align = await input.dropdown("Text alignment:", ["left", "center", "right"]);
 ```
 
+<br>
 
 #### `number(label, options?)`
 
@@ -185,11 +187,13 @@ Returns the number that was entered.
 const count = await input.number("Number of rectangles:", { integer: true });
 ```
 
+<br>
+
 #### `page(label?, options?)`
 
 Shows a dropdown menu of all the pages in the current Figma document.
 
-- `label`: The label to show above the dropdown menu.  Defaults to *Select a page:*.
+- `label`: An optional label to show above the dropdown menu.  Defaults to *Select a page:*.
 - `options`: An optional object with any of the following keys.
   - `placeholder`: A string to show when nothing has been selected.  Defaults to *Pages*.
 
@@ -201,6 +205,7 @@ Returns the `PageNode` of the selected page.
 const selectedPage = await input.page();
 ```
 
+<br>
 
 #### `text(label, options?)`
 
@@ -218,14 +223,16 @@ Returns the string that was entered.
 const title = await input.text("Enter a title:");
 ```
 
-
+<br>
 <hr>
-
 
 ### `output`
 
 The `output` methods listed below return a promise that resolves to `undefined`, but you still need to await the response to give them time to update the plugin UI before returning and to ensure that the calls are executed in order.
 
+Note that since the `output` methods don't wait for any user input, execution will immediately move to the next statement.  So if you want to, say, show some text when a script finishes, be sure to call something like `await input.buttons(["Done"])` after the output, so that the plugin will wait for the user to click *Done* before closing.
+
+<br>
 
 #### `clipboard(value)`
 
@@ -237,6 +244,7 @@ Copies a string version of `value` to the clipboard.  If `value` is a non-null o
 await output.clipboard(figma.currentPage.selection[0].fills);
 ```
 
+<br>
 
 #### `text(string, options?)`
 
@@ -256,16 +264,20 @@ Rectangle count: 5
 Format: JSON`);
 ```
 
-
+<br>
 <hr>
 
-
 ### `ui`
+
+These methods let you control the state of the plugin window.
+
+<br>
 
 #### `hide()`
 
 Hides the plugin window if it's currently open, but does not close it or end plugin execution.
 
+<br>
 
 #### `setSize(size)`
 
@@ -277,6 +289,7 @@ The plugin window defaults to 300px wide by 200px tall.
   - `width`: The desired `width` in px.
   - `height`: The desired `height` in px.
 
+<br>
 
 #### `show(size?)`
 
@@ -289,7 +302,7 @@ Opens or shows the plugin window, and sets it to the specified size, if one is s
 
 ## Credits
 
-The idea for `fwidgets` was inspired by the [Airtable scripting API](https://airtable.com/developers/scripting/api), which is generally terrible except for its `input` and `output` methods.  They're a clever solution to including interactive UI elements in a script without having to build a full event-driven app architecture.
+The idea for `fwidgets` was inspired by the [Airtable scripting API](https://airtable.com/developers/scripting/api), which is generally terrible except for its `input` and `output` methods.  They're a clever solution for displaying interactive UI elements while executing a script without having to build a full event-driven app architecture.
 
 This package uses [`create-figma-plugin`](https://github.com/yuanqing/create-figma-plugin) for the [UI components](https://yuanqing.github.io/create-figma-plugin/ui/) and for building the plugin.
 

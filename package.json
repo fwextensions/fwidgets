@@ -1,6 +1,6 @@
 {
   "name": "fwidgets",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Create a simple Figma plugin UI with zero UI code.",
   "keywords": [
     "figma",
@@ -33,7 +33,8 @@
   "scripts": {
     "build": "tsc",
     "test": "npm run build -w test",
-    "test:dev": "npm run dev -w test"
+    "test:dev": "npm run dev -w test",
+    "release": "dotenv release-it"
   },
   "dependencies": {
     "classnames": "^2.3.2",
@@ -47,6 +48,42 @@
   "devDependencies": {
     "@create-figma-plugin/tsconfig": "^3.0.2",
     "@figma/plugin-typings": "1.81.0",
+    "@release-it/conventional-changelog": "^8.0.0",
+    "dotenv-cli": "^7.3.0",
+    "release-it": "^17.0.0",
     "typescript": "^5.2.2"
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Added"
+            },
+            {
+              "type": "fix",
+              "section": "Fixes"
+            },
+            {
+              "type": "chore",
+              "section": "Chores"
+            },
+            {
+              "type": "ci",
+              "section": "CI/CD"
+            }
+          ]
+        },
+        "infile": "CHANGELOG.md",
+        "header": "# Changelog",
+        "ignoreRecommendedBump": true
+      }
+    }
   }
 }
