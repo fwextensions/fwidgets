@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "classnames": "^2.3.2",
-    "figma-await-call": "0.0.2"
+    "figma-await-call": "0.0.4"
   },
   "peerDependencies": {
     "@create-figma-plugin/ui": "^3.0.2",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@create-figma-plugin/tsconfig": "^3.0.2",
-    "@figma/plugin-typings": "1.80.0",
+    "@figma/plugin-typings": "1.81.0",
     "typescript": "^5.2.2"
   }
 }

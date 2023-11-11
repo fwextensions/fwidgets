@@ -224,7 +224,7 @@ const title = await input.text("Enter a title:");
 
 ### `output`
 
-The `output` methods listed below return a promise that resolves to `undefined`, but you still need to await the response to give them time to update the plugin UI before returning.
+The `output` methods listed below return a promise that resolves to `undefined`, but you still need to await the response to give them time to update the plugin UI before returning and to ensure that the calls are executed in order.
 
 
 #### `clipboard(value)`
