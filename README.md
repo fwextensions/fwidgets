@@ -14,7 +14,9 @@ Many useful Figma plugins run only in the main thread, where they can access the
 Rather than installing this package on its own, it's easiest to start with a copy of this [template repository](https://github.com/fwextensions/fwidgets-template):
 
 ```shell
-npx --yes degit fwextensions/fwidgets-template my-plugin-name
+$ npx --yes degit fwextensions/fwidgets-template my-plugin-name
+$ cd my-plugin-name
+$ npm install
 ```
 
 Replace `my-plugin-name` with whatever you want to call the directory for your plugin.
@@ -22,7 +24,7 @@ Replace `my-plugin-name` with whatever you want to call the directory for your p
 
 ## Usage
 
-Once the plugin skeleton has been created, open its `package.json` and edit this section to customize the `id` and `name` of your plugin:
+Once the plugin skeleton has been created and all its dependencies installed, open the `package.json` file and edit this section to customize the `id` and `name` of your plugin:
 
 ```
 "figma-plugin": {
@@ -44,6 +46,9 @@ Open `src/main.ts` to see the sample code.  Most of it is contained within an as
 A typical use of the API looks like this:
 
 ```typescript
+// main.ts
+import fwidgets from "fwidgets/main";
+
 export default fwidgets(async ({ input, output, ui }) => {
   // ...
   const count = await input.number("Number of rectangles:", {
@@ -54,6 +59,8 @@ export default fwidgets(async ({ input, output, ui }) => {
   });
 });
 ```
+
+![number screenshot](https://user-images.githubusercontent.com/61631/280553210-ce887bee-2fc7-4994-9cd2-b089456e9903.png)
 
 You make a call to an `input` method like `number()`, which will show a numeric entry field in the plugin window.  Pass the method a label string and any options needed for that UI element.
 
@@ -99,6 +106,8 @@ All of the `input` methods listed below, except for `buttons()`, display a butto
 For any of the label parameters below, pass an empty string to not take up any space for a label at all.
 
 Calling one of these methods will automatically show the plugin window if it's not currently open or visible.
+
+All of the `fwidgets` UI elements support dark mode and will automatically switch their styling based on the current settings within the Figma app.
 
 <br>
 
@@ -303,6 +312,8 @@ Opens or shows the plugin window, and sets it to the specified size, if one is s
 ## Credits
 
 The idea for `fwidgets` was inspired by the [Airtable scripting API](https://airtable.com/developers/scripting/api), which is generally terrible except for its `input` and `output` methods.  They're a clever solution for displaying interactive UI elements while executing a script without having to build a full event-driven app architecture.
+
+`fwidgets` also draws from the [JSML Library](https://www.johndunning.com/fireworks/about/JSMLLibrary) that I created for Adobe Fireworks a decade ago.  That library let you create Fireworks dialogs and panels without any Flash or Flex code, just JavaScript.
 
 This package uses [`create-figma-plugin`](https://github.com/yuanqing/create-figma-plugin) for the [UI components](https://yuanqing.github.io/create-figma-plugin/ui/) and for building the plugin.
 
