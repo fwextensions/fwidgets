@@ -6,7 +6,7 @@ import {
 	useState
 } from "preact/hooks";
 import { Container, Stack, VerticalSpace } from "@create-figma-plugin/ui";
-import { receive } from "figma-await-call";
+import { receive } from "figma-await-ipc";
 import { FwidgetsCall } from "../../shared/constants";
 import { createWidgetSpec, createWidgetElement, WidgetSpec } from "../widgets";
 

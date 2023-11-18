@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { DeferredPromise } from "figma-await-call";
+import { DeferredPromise } from "figma-await-ipc";
 import InputButtons from "./components/InputButtons";
 import InputColor from "./components/InputColor";
 import InputDropdown from "./components/InputDropdown";

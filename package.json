@@ -32,13 +32,13 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "npm run build -w test",
+    "test:build": "npm run build -w test",
     "test:dev": "npm run dev -w test",
     "release": "dotenv release-it"
   },
   "dependencies": {
     "classnames": "^2.3.2",
-    "figma-await-call": "0.0.4"
+    "figma-await-ipc": "^0.1.0"
   },
   "peerDependencies": {
     "@create-figma-plugin/ui": "^3.0.2",
@@ -48,7 +48,7 @@
   "devDependencies": {
     "@create-figma-plugin/tsconfig": "^3.0.2",
     "@figma/plugin-typings": "1.81.0",
-    "@release-it/conventional-changelog": "^8.0.0",
+    "@release-it/conventional-changelog": "^8.0.1",
     "dotenv-cli": "^7.3.0",
     "release-it": "^17.0.0",
     "typescript": "^5.2.2"

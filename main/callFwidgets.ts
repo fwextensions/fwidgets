@@ -1,4 +1,4 @@
-import { call } from "figma-await-call";
+import { call } from "figma-await-ipc";
 import { FwidgetsCall } from "../shared/constants";
 import { show } from "./ui";
 

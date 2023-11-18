@@ -141,7 +141,7 @@ Returns an `{ a, r, g, b }` object containing the alpha, red, green and blue com
 ![color screenshot](https://user-images.githubusercontent.com/61631/280553180-2e416d19-b453-4c1a-ba2c-33d2a23d7c09.png)
 
 ```typescript
-const argb = await input.color("Rectangle fill color:");
+const rgba = await input.color("Rectangle fill color:");
 ```
 
 If you just need the RGB components, you can extract them with the rest operator like this:
