@@ -8,7 +8,7 @@
   "dependencies": {
     "@create-figma-plugin/ui": "^3.0.2",
     "@create-figma-plugin/utilities": "^3.0.2",
-    "fwidgets": "file:..",
+    "fwidgets": "file:../../fwidgets",
     "preact": "^10.18.1"
   },
   "devDependencies": {

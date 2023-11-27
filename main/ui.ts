@@ -3,6 +3,10 @@ import { showUI } from "@create-figma-plugin/utilities";
 type WindowSize = {
 	width: number;
 	height: number;
+};
+type WindowPosition = null | {
+	x: number;
+	y: number;
 }
 
 const DefaultSize: WindowSize = {
@@ -11,17 +15,28 @@ const DefaultSize: WindowSize = {
 };
 
 let windowSize = { ...DefaultSize };
+let windowPosition: WindowPosition = null;
 let isUIOpen = false;
 let isUIVisible = false;
 
 export function show(
-	size?: WindowSize)
+	size?: WindowSize,
+	position?: { x: number, y: number })
+//	size?: WindowSize)
 {
 	if (size) {
+		windowSize = { ...size };
+
 		if (isUIOpen) {
 			figma.ui.resize(size.width, size.height);
-		} else {
-			windowSize = size;
+		}
+	}
+
+	if (position) {
+		windowPosition = { ...position };
+
+		if (isUIOpen) {
+			figma.ui.reposition(position.x, position.y);
 		}
 	}
 
@@ -29,13 +44,8 @@ export function show(
 
 	if (!isUIOpen) {
 		isUIOpen = true;
-		showUI(windowSize);
-
-// TODO: show UI using built in function, not relying on cfp package
-//		figma.showUI(__html__, {
-//			...windowSize,
-//			themeColors: true
-//		});
+		showUI({ ...windowSize, ...(position ? { position } : {}) });
+//		showUI(windowSize);
 	} else {
 		figma.ui.show();
 	}
@@ -60,3 +70,18 @@ export function setSize(
 		figma.ui.resize(size.width, size.height);
 	}
 }
+
+export function setPosition(
+	size: WindowSize)
+{
+	windowSize = size;
+
+	if (isUIOpen) {
+		figma.ui.resize(size.width, size.height);
+	}
+}
+
+export const isOpen = () => isUIOpen;
+export const isVisible = () => isUIVisible;
+export const getSize = () => ({ ...windowSize });
+export const getPosition = () => (windowPosition ? { ...windowPosition } : null);

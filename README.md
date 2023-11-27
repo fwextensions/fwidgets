@@ -308,6 +308,8 @@ Opens or shows the plugin window, and sets it to the specified size, if one is s
   - `width`: The desired `width` in px.
   - `height`: The desired `height` in px.
 
+<br>
+
 
 ## Credits
 

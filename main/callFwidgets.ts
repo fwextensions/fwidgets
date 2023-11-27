@@ -6,6 +6,13 @@ export async function callFwidgets<T = string>(
 	type: string,
 	options: object)
 {
+//	const { x, width } = figma.viewport.bounds;
+//
+//console.log(figma.viewport.bounds, Math.floor(figma.viewport.bounds.width / 2));
+//	show(undefined, null);
+////	show(undefined, { x: 0, y: 0 });
+////	show(undefined, { x: 100000, y: 100000 });
+////	show(undefined, { x: x + Math.floor(width / 2), y: 0 });
 	show();
 
 	const result = await call<T>(FwidgetsCall, { type, options });
