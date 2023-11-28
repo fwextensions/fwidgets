@@ -1,0 +1,84 @@
+{
+  "name": "fwidgets",
+  "version": "0.0.2",
+  "description": "Create a simple Figma plugin UI with zero UI code.",
+  "keywords": [
+    "figma",
+    "plugin",
+    "ui"
+  ],
+  "author": "John Dunning",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fwextensions/fwidgets.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fwextensions/fwidgets/issues"
+  },
+  "homepage": "https://github.com/fwextensions/fwidgets#readme",
+  "type": "module",
+  "files": [
+    "shared",
+    "main",
+    "ui"
+  ],
+  "exports": {
+    "./main": "./main/index.ts",
+    "./ui": "./ui/index.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "release": "dotenv release-it"
+  },
+  "dependencies": {
+    "classnames": "^2.3.2",
+    "figma-await-ipc": "^0.1.0"
+  },
+  "peerDependencies": {
+    "@create-figma-plugin/ui": "^3.0.2",
+    "@create-figma-plugin/utilities": "^3.0.2",
+    "preact": "^10.18.1"
+  },
+  "devDependencies": {
+    "@create-figma-plugin/tsconfig": "^3.0.2",
+    "@figma/plugin-typings": "1.81.0",
+    "@release-it/conventional-changelog": "^8.0.1",
+    "dotenv-cli": "^7.3.0",
+    "release-it": "^17.0.0",
+    "typescript": "^5.2.2"
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Added"
+            },
+            {
+              "type": "fix",
+              "section": "Fixes"
+            },
+            {
+              "type": "chore",
+              "section": "Chores"
+            },
+            {
+              "type": "ci",
+              "section": "CI/CD"
+            }
+          ]
+        },
+        "infile": "CHANGELOG.md",
+        "header": "# Changelog",
+        "ignoreRecommendedBump": true
+      }
+    }
+  }
+}

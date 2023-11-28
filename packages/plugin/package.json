@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "plugin",
   "scripts": {
     "build": "build-figma-plugin --typecheck --minify",
     "build:nomin": "build-figma-plugin --typecheck",
@@ -8,7 +8,6 @@
   "dependencies": {
     "@create-figma-plugin/ui": "^3.0.2",
     "@create-figma-plugin/utilities": "^3.0.2",
-    "fwidgets": "file:../../fwidgets",
     "preact": "^10.18.1"
   },
   "devDependencies": {
