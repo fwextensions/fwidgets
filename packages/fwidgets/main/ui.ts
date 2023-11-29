@@ -21,7 +21,7 @@ let isUIVisible = false;
 
 export function show(
 	size?: WindowSize,
-	position?: { x: number, y: number })
+	position?: WindowPosition)
 //	size?: WindowSize)
 {
 	if (size) {

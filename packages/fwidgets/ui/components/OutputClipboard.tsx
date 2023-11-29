@@ -13,6 +13,8 @@ function copyTextToClipboard(
 	copyFrom.focus({ preventScroll: true });
 	copyFrom.select();
 
+		// Figma doesn't support the clipboard API, so even though execCommand() is
+		// deprecated, it's the only way to trigger a copy
 	if (!document.execCommand("copy")) {
 		result = false;
 	}
