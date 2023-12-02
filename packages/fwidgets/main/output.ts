@@ -1,6 +1,7 @@
-import * as ui from "./ui";
+import { call } from "figma-await-ipc";
+import { FwidgetsCall } from "../shared/constants";
 import { callFwidgets } from "./callFwidgets";
-import { show } from "./ui";
+import { showMinimized } from "./ui";
 
 type ClipboardOptions = {
 	message?: string;
@@ -13,9 +14,6 @@ export async function clipboard(
 	options: ClipboardOptions = {})
 {
 	const { message, error, timeout } = options;
-	const windowWasOpen = ui.isOpen();
-	const windowSize = ui.getSize();
-	const { x, y, width, height } = figma.viewport.bounds;
 	let text;
 
 	if (value && typeof value === "object") {
@@ -24,22 +22,23 @@ export async function clipboard(
 		text = String(value);
 	}
 
-	if (!windowWasOpen) {
-			// the viewport width/height doesn't include the side panels, and we don't
-			// know how big those are.  so multiply the width/height to force the
-			// plugin window as far down and to the right as it'll go.
-		show({ width: 0, height: 0 }, { x: x + width * 5, y: y + height * 5 });
-	}
+	showMinimized();
 
-	const result = await callFwidgets<undefined>("OutputClipboard", { ...options, text });
-
-	if (!windowWasOpen) {
-		ui.hide();
-		ui.setSize(windowSize);
-	}
+		// since we want to call showMinimized() instead of show(), which
+		// callFwidgets() does by default, we have to use call() directly
+	const result = await call<undefined>(FwidgetsCall, {
+		type: "OutputClipboard",
+		options: { text }
+	});
 
 	if (message) {
 		figma.notify(message, { error, timeout });
+	}
+
+	if (result === null) {
+			// null means esc was pressed, so for now, just throw an empty error that
+			// will be caught by fwidgets() and close the plugin with no message
+		throw new Error();
 	}
 
 	return result;

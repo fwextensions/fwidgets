@@ -1,4 +1,5 @@
 {
+  "name": "fwidgets-monorepo",
   "private": true,
   "author": "John Dunning",
   "license": "MIT",
