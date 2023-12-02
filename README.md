@@ -288,6 +288,18 @@ Hides the plugin window if it's currently open, but does not close it or end plu
 
 <br>
 
+#### `setPosition(position)`
+
+Sets the plugin window position, but does not show it if it's not currently visible.
+
+The `position` is relative to the top-left of the viewport in *screen* coordinates.  This means you don't have to calculate the coordinates based on the viewport's current zoom and bounds.
+
+- `position`:
+  - `x`: The desired X-position in px.
+  - `y`: The desired Y-position in px.
+
+<br>
+
 #### `setSize(size)`
 
 Sets the plugin window size, but does not show it if it's not currently visible.

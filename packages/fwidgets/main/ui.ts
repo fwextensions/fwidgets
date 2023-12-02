@@ -31,15 +31,12 @@ export function show({
 	}: ShowOptions = {})
 {
 	const { zoom } = figma.viewport;
-	const showUIOptions = {};
+		// default to showing the window at its saved size
+	let targetSize = { ...windowSize };
+	let targetPosition;
 
 	if (size) {
-		windowSize = { ...size };
-		Object.assign(showUIOptions, size);
-
-		if (isUIOpen) {
-			figma.ui.resize(size.width, size.height);
-		}
+		targetSize = windowSize = { ...size };
 	}
 
 	if (isUIMinimized) {
@@ -55,45 +52,43 @@ export function show({
 		const vpX = x + (width - vpW) / 2;
 		const vpY = y + (height - vpH) / 2;
 
-		Object.assign(showUIOptions, {
-			...windowSize,
-			position: {
-				x: vpX,
-				y: vpY,
-			}
-		});
-
-		if (isUIOpen) {
-			figma.ui.resize(windowSize.width, windowSize.height);
-			figma.ui.reposition(vpX, vpY);
-		}
-
+		targetPosition = {
+			x: vpX,
+			y: vpY,
+		};
 		isUIMinimized = false;
 	}
 
+		// check position after isUIMinimized so that the position param can override
+		// the centering that's done in the block above
 	if (position) {
 		const { x, y } = figma.viewport.bounds;
 
 		windowPosition = { ...position };
-		Object.assign(showUIOptions, {
-			position: {
-				x: x + position.x / zoom,
-				y: y + position.y / zoom,
-			}
-		});
-
-		if (isUIOpen) {
-			figma.ui.reposition(position.x, position.y);
-		}
+		targetPosition = {
+			x: x + position.x / zoom,
+			y: y + position.y / zoom,
+		};
 	}
 
 	isUIVisible = true;
 
-	if (!isUIOpen) {
-		isUIOpen = true;
-		showUI(showUIOptions);
-	} else {
+	if (isUIOpen) {
+		if (targetSize) {
+			figma.ui.resize(targetSize.width, targetSize.height);
+		}
+
+		if (targetPosition) {
+			figma.ui.reposition(targetPosition.x, targetPosition.y);
+		}
+
 		figma.ui.show();
+	} else {
+		isUIOpen = true;
+		showUI({
+			...targetSize,
+			...(targetPosition ? { position: targetPosition } : null)
+		});
 	}
 }
 
@@ -130,7 +125,7 @@ export function hide()
 export function setSize(
 	size: WindowSize)
 {
-	windowSize = size;
+	windowSize = { ...size };
 
 	if (isUIOpen) {
 		figma.ui.resize(size.width, size.height);
@@ -138,12 +133,21 @@ export function setSize(
 }
 
 export function setPosition(
-	size: WindowSize)
+	position: WindowPosition)
 {
-	windowSize = size;
+	if (position) {
+		windowPosition = { ...position };
 
-	if (isUIOpen) {
-		figma.ui.resize(size.width, size.height);
+		if (isUIOpen) {
+			const { zoom, bounds: { x, y } } = figma.viewport;
+
+			figma.ui.reposition(
+				x + position.x / zoom,
+				y + position.y / zoom
+			);
+		}
+	} else {
+		windowPosition = null;
 	}
 }
 
