@@ -1,12 +1,17 @@
 import { call } from "figma-await-ipc";
 import { FwidgetsCall } from "../shared/constants";
-import { show } from "./ui";
+import { show, showMinimized } from "./ui";
 
 export async function callFwidgets<T = string>(
 	type: string,
-	options: object)
+	options: object,
+	minimizeWindow: boolean = false)
 {
-	show();
+	if (minimizeWindow) {
+		showMinimized();
+	} else {
+		show();
+	}
 
 	const result = await call<T>(FwidgetsCall, { type, options });
 

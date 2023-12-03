@@ -1,7 +1,4 @@
-import { call } from "figma-await-ipc";
-import { FwidgetsCall } from "../shared/constants";
 import { callFwidgets } from "./callFwidgets";
-import { showMinimized } from "./ui";
 
 type ClipboardOptions = {
 	message?: string;
@@ -9,39 +6,26 @@ type ClipboardOptions = {
 	timeout?: number;
 }
 
-export async function clipboard(
+export function clipboard(
 	value: unknown,
 	options: ClipboardOptions = {})
 {
 	const { message, error, timeout } = options;
-	let text;
-
-	if (value && typeof value === "object") {
-		text = JSON.stringify(value, null, "\t");
-	} else {
-		text = String(value);
-	}
-
-	showMinimized();
-
-		// since we want to call showMinimized() instead of show(), which
-		// callFwidgets() does by default, we have to use call() directly
-	const result = await call<undefined>(FwidgetsCall, {
-		type: "OutputClipboard",
-		options: { text }
-	});
+	const text = (value && typeof value === "object")
+		? JSON.stringify(value, null, "\t")
+		: String(value);
 
 	if (message) {
 		figma.notify(message, { error, timeout });
 	}
 
-	if (result === null) {
-			// null means esc was pressed, so for now, just throw an empty error that
-			// will be caught by fwidgets() and close the plugin with no message
-		throw new Error();
-	}
-
-	return result;
+		// pass true to make callFwidgets() call showMinimized() instead of show(),
+		// so that we use a minimal window to do the copying
+	return callFwidgets<undefined>(
+		"OutputClipboard",
+		{ ...options, text },
+		true
+	);
 }
 
 export function text(
