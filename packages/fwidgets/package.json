@@ -1,6 +1,6 @@
 {
   "name": "fwidgets",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Create a simple Figma plugin UI with zero UI code.",
   "keywords": [
     "figma",
