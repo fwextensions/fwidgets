@@ -78,7 +78,7 @@
             }
           ]
         },
-        "infile": "CHANGELOG.md",
+        "infile": "../../CHANGELOG.md",
         "header": "# Changelog",
         "ignoreRecommendedBump": true
       }
