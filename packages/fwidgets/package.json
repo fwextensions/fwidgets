@@ -29,6 +29,8 @@
   },
   "scripts": {
     "build": "tsc",
+    "prepack": "shx cp -f ../../README.md .",
+    "postpack": "shx rm ./README.md",
     "release": "dotenv release-it"
   },
   "dependencies": {
@@ -46,6 +48,7 @@
     "@release-it/conventional-changelog": "^8.0.1",
     "dotenv-cli": "^7.3.0",
     "release-it": "^17.0.0",
+    "shx": "^0.3.4",
     "typescript": "^5.2.2"
   },
   "release-it": {

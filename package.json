@@ -16,8 +16,8 @@
   ],
   "scripts": {
     "build": "npm run tsc -w fwidgets",
+    "release": "npm run release -w fwidgets",
     "plugin:build": "npm run build -w plugin",
-    "plugin:dev": "npm run dev -w plugin",
-    "release": "dotenv release-it -w fwidgets"
+    "plugin:dev": "npm run dev -w plugin"
   }
 }

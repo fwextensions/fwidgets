@@ -243,11 +243,17 @@ Note that since the `output` methods don't wait for any user input, execution wi
 
 <br>
 
-#### `clipboard(value)`
+#### `clipboard(value, options?)`
 
 Copies a string version of `value` to the clipboard.  If `value` is a non-null object, then it will be converted to formatted JSON before copying.
 
+Due to limitations in the Figma API, the plugin window has to be open and visible for text to be copied to the clipboard.  If it's not currently open, calling `output.clipboard()` will open the window at its minimal size in the lower-right corner of Figma.  This makes the opening and closing of the window as inconspicuous as possible when your plugin just needs to copy some text.  The next time a `fwidgets` method is called to show a UI control, the window will be restored to its normal size in the middle of the screen.
+
 - `value`: The data to copy to the user's clipboard.
+- `options`: An optional object with any of the following keys, which are passed to `figma.notify()`.
+  - `message`: A string to show in a toast notification marking the copy operation.  Limited to 100 characters.
+  - `error`: A boolean indicating whether the message is an error, which shows it in a different color.
+  - `timeout`: The time in milliseconds to show the toast.  Defaults to 3000.
 
 ```typescript
 await output.clipboard(figma.currentPage.selection[0].fills);
@@ -261,7 +267,7 @@ Displays static text that can wrap to multiple lines.
 
 - `string`: The string to display.
 - `options`: An optional object with any of the following keys.
-  - `align`: Control the alignment of the text by passing `"left"|"center"|"right"`.
+  - `align`: Control the alignment of the text by passing `"left" | "center" | "right"`.
   - `numeric`: A boolean controlling whether the text is rendered with monospaced numerals.
 
 ![text screenshot](https://user-images.githubusercontent.com/61631/280554012-6625df86-06ca-456f-8afa-38ae01fef893.png)

@@ -27,18 +27,10 @@ function createRectangles(
 // that contain functions you can use to display UI controls, one at a time.
 export default fwidgets(async ({ input, output, ui }) => {
 	// you can set the size of the plugin window
-//	ui.setSize({
-//		width: 0,
-//		height: 0
-//	});
-//	ui.setSize({
-//		width: 300,
-//		height: 250
-//	});
-
-	await output.clipboard(new Date().toLocaleTimeString());
-
-	return;
+	ui.setSize({
+		width: 300,
+		height: 250
+	});
 
 	// the color picker returns an RGBA object, but we only need the RGB here
 	const { a, ...rgb } = await input.color("Rectangle fill color:");
