@@ -1,0 +1,15 @@
+steps:
+  - read: pluginName
+    prompt: What is the name of your plugin?
+    default:
+      eval: '{{ filesystem.rootdir | Capital Case }}'
+
+  - degit: fwextensions/fwidgets/packages/plugin
+    to: .
+
+  - copy: .tmplr/*
+    to: .
+
+  - remove: .tmplr
+  - remove: .tmplr.yml
+  - remove: bin.js
