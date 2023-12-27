@@ -1,0 +1,35 @@
+steps:
+  - read: pluginName
+    prompt: 'Enter the name of the plugin:'
+    default:
+      eval: '{{ filesystem.scopedir | Capital Case }}'
+
+  - read: outputDir
+    prompt: 'Enter the directory in which to create the plugin:'
+    default:
+      eval: '{{ pluginName | kebab-case }}'
+
+  - read: outputPath
+    eval: '../{{ outputDir }}'
+
+# this doesn't detect an existing directory for some reason, so for now, don't
+# include the remove command
+#  - if:
+#      exists: '{{ outputPath }}'
+#    prompt: '"{{ outputPath }}" already exists. Delete it before continuing?'
+#    choices:
+#      - Yes
+#      - No:
+#          skip: steps
+#
+#  - remove: '{{ outputPath }}'
+
+  - degit: fwextensions/fwidgets/packages/plugin
+    to: '{{ outputPath }}'
+
+  - copy: .tmplr/*
+    to: '{{ outputPath }}'
+
+  - remove: .tmplr
+  - remove: .tmplr.yml
+  - remove: bin.js

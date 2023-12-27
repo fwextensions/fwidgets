@@ -1,0 +1,66 @@
+{
+  "name": "create-fwidgets",
+  "version": "0.0.0",
+  "description": "Create a Figma plugin using the fwidgets package.",
+  "keywords": [
+    "figma",
+    "plugin",
+    "ui"
+  ],
+  "author": "John Dunning",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fwextensions/fwidgets.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fwextensions/fwidgets/issues"
+  },
+  "homepage": "https://github.com/fwextensions/fwidgets#readme",
+  "bin": "npx tmplr",
+  "scripts": {
+    "release": "release-it"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^8.0.1",
+    "release-it": "^17.0.0"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "Release ${npm.name}@${version}",
+      "tagName": "${npm.name}@${version}"
+    },
+    "github": {
+      "releaseName": "Release ${npm.name}@${version}",
+      "release": false
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Fixes"
+            },
+            {
+              "type": "chore",
+              "section": "Chores"
+            },
+            {
+              "type": "ci",
+              "section": "CI/CD"
+            }
+          ]
+        },
+        "infile": "CHANGELOG.md",
+        "header": "# Changelog",
+        "ignoreRecommendedBump": true
+      }
+    }
+  }
+}
