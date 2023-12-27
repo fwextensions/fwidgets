@@ -8,13 +8,13 @@
 ## Usage
 
 ```shell
-npm create fwidgets
+npm create fwidgets@latest
 ```
 
 Follow the prompts to create a fully-scaffolded plugin directory:
 
 ```shell
-$ npm create fwidgets
+$ npm create fwidgets@latest
   Enter the name of the plugin:
   > My Plugin
   Enter the directory in which to create the plugin:
