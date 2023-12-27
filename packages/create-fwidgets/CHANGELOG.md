@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.3](https://github.com/fwextensions/fwidgets/compare/create-fwidgets@0.0.2...${npm.name}@0.0.3) (2023-12-27)
+
+
+### Fixes
+
+* Add `[@latest](https://github.com/latest)` to the `npm create fwidgets` command in the docs ([8c78ddf](https://github.com/fwextensions/fwidgets/commit/8c78ddf4cb1c3b4f6fc153e06a609a7539635e82))
+* Add `bin.js` as `create-fwidgets` command ([d8492f7](https://github.com/fwextensions/fwidgets/commit/d8492f7d043f2b3f0b5a3d11efacfa190eb13f55))
+
 ## [0.0.2](https://github.com/fwextensions/fwidgets/compare/create-fwidgets@0.0.1...${npm.name}@0.0.2) (2023-12-27)
 
 
