@@ -17,6 +17,7 @@
   "scripts": {
     "build": "npm run tsc -w fwidgets",
     "release": "npm run release -w fwidgets",
+    "create-fwidgets:release": "npm run release -w create-fwidgets",
     "plugin:build": "npm run build -w plugin",
     "plugin:dev": "npm run dev -w plugin"
   }

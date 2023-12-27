@@ -17,7 +17,9 @@
     "url": "https://github.com/fwextensions/fwidgets/issues"
   },
   "homepage": "https://github.com/fwextensions/fwidgets#readme",
-  "bin": "npx tmplr",
+  "bin": {
+    "create-fwidgets": "npx tmplr"
+  },
   "scripts": {
     "release": "release-it"
   },
