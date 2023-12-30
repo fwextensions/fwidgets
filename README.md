@@ -75,7 +75,7 @@ Try changing one of the strings that supplies a UI label and save the file to re
 
 That's it! The whole workflow is basically just adding some code inside the call to `fwidgets()` in `main.ts`, saving the file, and then testing the plugin in Figma.
 
-Note that you shouldn't edit the `ui.tsx` file, which is there just to set up the Preact code that listens for calls from the main thread and to then render the requested UI element.  (If you know what you're doing, you could add some static elements around the core `<Fwidgets />` component, but that's left as an exercise for the reader.)
+Note that you shouldn't edit the one-line `ui.tsx` file, which is there just to set up the Preact code that listens for calls from the main thread and to then render the requested UI element.  (If you know what you're doing, you could import `<Fwidgets>` from `fwidgets/ui` and `render()` from `@create-figma-plugin/ui`, and then render some static components around it, but that's left as an exercise for the reader.)
 
 
 ## API
