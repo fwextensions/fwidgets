@@ -1,7 +1,8 @@
 import { ComponentChildren, h, JSX } from "preact";
-import { Inline, Stack } from "@create-figma-plugin/ui";
+import { Stack } from "@create-figma-plugin/ui";
 import Label from "./Label";
 import NextButton from "./NextButton";
+import FwInline from "./FwInline";
 
 interface InlineWidgetProps {
 	label?: string,
@@ -25,14 +26,14 @@ export default function InlineWidget({
 				text={label}
 				disabled={disabled}
 			/>
-			<Inline space="small">
+			<FwInline space="small">
 				{children}
 				<NextButton
 					disabled={!nextEnabled}
 					hidden={disabled}
 					onClick={onNextClick}
 				/>
-			</Inline>
+			</FwInline>
 		</Stack>
 	);
 }

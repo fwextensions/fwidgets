@@ -28,7 +28,7 @@
     "./ui": "./ui/index.ts"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npx typed-css-modules ui && tsc",
     "prepack": "shx cp -f ../../README.md .",
     "postpack": "shx rm ./README.md",
     "release": "dotenv release-it"

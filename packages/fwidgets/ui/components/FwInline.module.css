@@ -1,0 +1,31 @@
+.fwInline {
+	display: flex;
+	align-items: baseline;
+}
+
+	/* because we can't pass in a style prop to affect the container element in
+	   textbox components, we have to match them by classname.  but we don't want
+	   to change the width of a textboxColor component. */
+.fwInline > :first-child[class*="textbox"]:not([class*="Color"]) {
+	width: 100%;
+}
+
+.extraSmall {
+  gap: var(--space-extra-small);
+}
+
+.medium {
+  gap: var(--space-medium);
+}
+
+.large {
+  gap: var(--space-large);
+}
+
+.small {
+  gap: var(--space-small);
+}
+
+.extraLarge {
+  gap: var(--space-extra-large);
+}

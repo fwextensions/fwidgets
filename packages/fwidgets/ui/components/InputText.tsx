@@ -1,7 +1,7 @@
 import { h } from "preact";
 import JSX = h.JSX;
 import { useCallback, useState } from "preact/hooks";
-import { Textbox, useInitialFocus } from "@create-figma-plugin/ui";
+import { TextboxMultiline, useInitialFocus } from "@create-figma-plugin/ui";
 import { keepName } from "../utils";
 import InlineWidget from "./InlineWidget";
 
@@ -12,7 +12,12 @@ interface InputTextProps {
 	defaultText?: string;
 	placeholder?: string;
 	focused?: boolean;
+	grow?: boolean;
+	rows?: number;
 }
+
+type InputEvent = JSX.TargetedEvent<HTMLInputElement | HTMLTextAreaElement>;
+type KeyboardEvent = JSX.TargetedKeyboardEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 export default function InputText({
 		confirm,
@@ -21,6 +26,8 @@ export default function InputText({
 		defaultText = "",
 		placeholder = "",
 		focused = false,
+		grow = true,
+		rows = 1,
 	}: InputTextProps)
 {
 	const [value, setValue] = useState(defaultText);
@@ -28,7 +35,7 @@ export default function InputText({
 	const isValueValid = !!value;
 
 	const handleInput = useCallback(
-		(event: JSX.TargetedEvent<HTMLInputElement>) => setValue(event.currentTarget.value),
+		(event: InputEvent) => setValue(event.currentTarget.value),
 		[]
 	);
 
@@ -38,8 +45,9 @@ export default function InputText({
 	);
 
 	const handleKeyDown = useCallback(
-		(event: JSX.TargetedKeyboardEvent<HTMLInputElement>) => {
-			if (event.key === "Enter") {
+		(event: KeyboardEvent) => {
+			if (event.key === "Enter" && !event.shiftKey) {
+				event.preventDefault();
 				handleConfirm();
 			} else if (event.key === "Escape") {
 				confirm(null);
@@ -55,8 +63,10 @@ export default function InputText({
 			nextEnabled={isValueValid}
 			onNextClick={handleConfirm}
 		>
-			<Textbox
+			<TextboxMultiline
+				grow={grow}
 				variant="border"
+				rows={rows}
 				disabled={disabled}
 				value={value}
 				placeholder={placeholder}
