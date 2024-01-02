@@ -82,9 +82,10 @@ Note that you shouldn't edit the one-line `ui.tsx` file, which is there just to 
 
 ### `fwidgets()`
 
-This is the only function you need to import.  Pass it an async function containing your plugin logic, which it will wrap with code to handle communication with the UI thread.  Export that wrapped function as the module's default value.
+This is the only function you need to import in your main file.  Pass it an async callback function containing your plugin logic, which it will wrap with code to handle communication with the UI thread.  Export that wrapped callback as the module's default value.
 
 ```typescript
+// main.ts
 import { fwidgets } from "fwidgets/main";
 
 export default fwidgets(async ({ input, output, ui }) => {
@@ -94,7 +95,7 @@ export default fwidgets(async ({ input, output, ui }) => {
 
 You can import code from other modules, and even make API calls before calling `fwidgets()`.  But it should only be called once, since it calls `figma.closePlugin()` before returning, which will disable the Figma APIs.
 
-Your function will be passed an object containing the [`input`](#input), [`output`](#output) and [`ui`](#ui) APIs that can be used to render UI elements and control the plugin window.
+Your function will be passed an object containing the [`input`](#input), [`output`](#output) and [`ui`](#ui) APIs that can be used to render UI elements and control the plugin window.  You can also import these APIs using the standard `import` syntax in other modules, which is useful when your script grows beyond a single file.  They are provided to your callback simply as a convenience.
 
 <br>
 <hr>

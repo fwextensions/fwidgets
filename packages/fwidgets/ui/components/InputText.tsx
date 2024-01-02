@@ -64,8 +64,8 @@ export default function InputText({
 			onNextClick={handleConfirm}
 		>
 			<TextboxMultiline
-				grow={grow}
 				variant="border"
+				grow={grow}
 				rows={rows}
 				disabled={disabled}
 				value={value}
