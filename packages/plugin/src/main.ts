@@ -1,4 +1,4 @@
-import { fwidgets } from "fwidgets/main";
+import { fwidgets } from "fwidgets";
 
 // it's fine to have initialization code or utility functions declared outside
 // of the call to fwidgets() below, but any code that needs to interact with the

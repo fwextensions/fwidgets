@@ -20,7 +20,7 @@ export function fwidgets(
 		.then((result) => figma.closePlugin(result ?? ""))
 		.catch((error) => {
 			if (error?.message) {
-					// this isn't empty error thrown by canceling, so write it to the
+					// this isn't an empty error thrown by canceling, so write it to the
 					// console so the user can see it
 				console.error(`Uncaught exception handled in fwidgets():\n${error}`);
 			}

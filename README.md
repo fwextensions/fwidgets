@@ -47,7 +47,7 @@ A typical use of the API looks like this:
 
 ```typescript
 // main.ts
-import fwidgets from "fwidgets/main";
+import fwidgets from "fwidgets";
 
 export default fwidgets(async ({ input, output, ui }) => {
   // ...
@@ -57,6 +57,7 @@ export default fwidgets(async ({ input, output, ui }) => {
     maximum: 10,
     integer: true
   });
+  // use the count value entered by the user
 });
 ```
 
@@ -86,7 +87,7 @@ This is the only function you need to import in your main file.  Pass it an asyn
 
 ```typescript
 // main.ts
-import { fwidgets } from "fwidgets/main";
+import { fwidgets } from "fwidgets";
 
 export default fwidgets(async ({ input, output, ui }) => {
   // add your plugin code here

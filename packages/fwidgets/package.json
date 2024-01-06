@@ -24,6 +24,7 @@
     "ui"
   ],
   "exports": {
+    ".": "./index.ts",
     "./main": "./main/index.ts",
     "./ui": "./ui/index.ts"
   },
