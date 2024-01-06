@@ -17,7 +17,6 @@
     "url": "https://github.com/fwextensions/fwidgets/issues"
   },
   "homepage": "https://github.com/fwextensions/fwidgets#readme",
-  "type": "module",
   "files": [
     "shared",
     "main",
@@ -51,38 +50,5 @@
     "release-it": "^17.0.0",
     "shx": "^0.3.4",
     "typescript": "^5.3.2"
-  },
-  "release-it": {
-    "github": {
-      "release": true
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": {
-          "name": "conventionalcommits",
-          "types": [
-            {
-              "type": "feat",
-              "section": "Features"
-            },
-            {
-              "type": "fix",
-              "section": "Fixes"
-            },
-            {
-              "type": "chore",
-              "section": "Chores"
-            },
-            {
-              "type": "ci",
-              "section": "CI/CD"
-            }
-          ]
-        },
-        "infile": "../../CHANGELOG.md",
-        "header": "# Changelog",
-        "ignoreRecommendedBump": true
-      }
-    }
   }
 }

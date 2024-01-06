@@ -26,43 +26,5 @@
   "devDependencies": {
     "@release-it/conventional-changelog": "^8.0.1",
     "release-it": "^17.0.0"
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "Release ${npm.name}@${version}",
-      "tagName": "${npm.name}@${version}"
-    },
-    "github": {
-      "releaseName": "Release ${npm.name}@${version}",
-      "release": false
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": {
-          "name": "conventionalcommits",
-          "types": [
-            {
-              "type": "feat",
-              "section": "Features"
-            },
-            {
-              "type": "fix",
-              "section": "Fixes"
-            },
-            {
-              "type": "chore",
-              "section": "Chores"
-            },
-            {
-              "type": "ci",
-              "section": "CI/CD"
-            }
-          ]
-        },
-        "infile": "CHANGELOG.md",
-        "header": "# Changelog",
-        "ignoreRecommendedBump": true
-      }
-    }
   }
 }
