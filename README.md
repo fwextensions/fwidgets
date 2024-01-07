@@ -4,39 +4,49 @@
 
 ![screenshot](https://user-images.githubusercontent.com/61631/280552964-f63c103e-61db-4b7b-8610-2116613e665d.png)
 
-Many useful Figma plugins run only in the main thread, where they can access the API and modify the document.  But sometimes you want to extend them with simple user interface elements, like a textbox to enter a name, or a color picker to customize the output.  Unfortunately, Figma doesn't offer any built-in UI components, so you have to roll your own, using a framework or vanilla JS/HTML/CSS.  And then you have to post messages back to the main thread in response to UI events, just so your plugin can actually make changes to the Figma document.
+Many useful Figma plugins run only in the main thread, where they can access the API and modify the document.  But sometimes you want to extend them with simple user interface elements, like a textbox to enter a name, or a color picker to customize the output.  Unfortunately, Figma doesn't offer any built-in UI components, so you have to roll your own with a framework or vanilla JS/HTML/CSS.  And then you have to post messages back and forth between the main and UI threads to respond to user actions.
 
 `fwidgets` is intended to dramatically simplify this process by letting you add basic UI functionality without writing any UI code.  Think of it like adding a series of interactive prompts to a command line tool, similar to the wizard structure of something like `create-react-app`.  `fwidgets` lets you show one UI element at a time to the user, awaiting their input and then responding to it, while keeping all of your code in the main thread.
 
 
 ## Install
 
-Rather than installing this package on its own, it's easiest to start with a copy of this [template repository](https://github.com/fwextensions/fwidgets-template):
+To create a new plugin using `fwidgets`:
 
 ```shell
-$ npx --yes degit fwextensions/fwidgets-template my-plugin-name
-$ cd my-plugin-name
-$ npm install
+npm create fwidgets@latest
 ```
 
-Replace `my-plugin-name` with whatever you want to call the directory for your plugin.
+Follow the prompts to create a fully-scaffolded plugin directory:
+
+```shell
+$ npm create fwidgets@latest
+  Enter the name of the plugin:
+  > My Plugin
+  Enter the directory in which to create the plugin:
+  > my-plugin
+  ✔ Cloned: fwextensions/fwidgets/packages/plugin -> my-plugin
+```
+
+Then install the dependencies:
+
+```shell
+$ cd my-plugin
+$ npm install
+```
 
 
 ## Usage
 
-Once the plugin skeleton has been created and all its dependencies installed, open the `package.json` file and edit this section to customize the `id` and `name` of your plugin:
+Once the plugin skeleton has been created and all its dependencies installed, start the development server:
 
-```
-"figma-plugin": {
-  "id": "fwidgetsPluginTemplate",
-  "name": "Fwidgets Plugin Template",
-  ...
-}
+```shell
+npm run dev
 ```
 
-Then open a terminal and execute `npm run dev` to start a process that rebuilds the plugin whenever files in the `src` directory change.  (The template uses the excellent [`create-figma-plugin`](https://github.com/yuanqing/create-figma-plugin) tool to build and package the plugin.)
+The plugin will be rebuilt whenever files in the `src` directory change.  (This package uses the excellent [`create-figma-plugin`](https://github.com/yuanqing/create-figma-plugin) tool to build and package the plugin.)
 
-In Figma, go to *Plugins > Development > Import plugin from manifest...* and select the `manifest.json` file that has been generated in the root directory.  Run your new plugin to see its sample code ask for a color, then a number of rectangles to create, and finally a confirmation before creating the colored rectangles and copying their bounding boxes to the clipboard as JSON.
+In Figma, go to *Plugins > Development > Import plugin from manifest...* and select the `manifest.json` file that has been generated in your plugin's directory.  Run your new plugin to see the sample code ask for a color, then a number of rectangles to create, and finally a confirmation before creating the colored rectangles and copying their bounding boxes to the clipboard as JSON.
 
 
 ### Awaiting user input
@@ -57,7 +67,7 @@ export default fwidgets(async ({ input, output, ui }) => {
     maximum: 10,
     integer: true
   });
-  // use the count value entered by the user
+  // use the count value in a Figma API call
 });
 ```
 
@@ -76,14 +86,14 @@ Try changing one of the strings that supplies a UI label and save the file to re
 
 That's it! The whole workflow is basically just adding some code inside the call to `fwidgets()` in `main.ts`, saving the file, and then testing the plugin in Figma.
 
-Note that you shouldn't edit the one-line `ui.tsx` file, which is there just to set up the Preact code that listens for calls from the main thread and to then render the requested UI element.  (If you know what you're doing, you could import `<Fwidgets>` from `fwidgets/ui` and `render()` from `@create-figma-plugin/ui`, and then render some static components around it, but that's left as an exercise for the reader.)
+Note that you shouldn't edit the one-line `ui.tsx` file, which is there just to set up the Preact code that listens for calls from the main thread and then renders the requested UI element.  (If you know what you're doing, you could import `<Fwidgets>` from `fwidgets/ui` and `render()` from `@create-figma-plugin/ui`, and then render some static components around it, but that's left as an exercise for the reader.)
 
 
 ## API
 
 ### `fwidgets()`
 
-This is the only function you need to import in your main file.  Pass it an async callback function containing your plugin logic, which it will wrap with code to handle communication with the UI thread.  Export that wrapped callback as the module's default value.
+This is the only function you need to import in your main file.  Pass it an async callback function containing your plugin logic, which it will wrap with code to handle communication with the UI thread.  Export that wrapped callback as the module's default value, which is then called by `create-figma-plugin` when your plugin is launched.
 
 ```typescript
 // main.ts
@@ -94,7 +104,7 @@ export default fwidgets(async ({ input, output, ui }) => {
 });
 ```
 
-You can import code from other modules, and even make API calls before calling `fwidgets()`.  But it should only be called once, since it calls `figma.closePlugin()` before returning, which will disable the Figma APIs.
+You can import code from other modules, and even make API calls before calling `fwidgets()`.  But it should only be called once, since it calls `figma.closePlugin()` before returning, which disables the Figma APIs.
 
 Your function will be passed an object containing the [`input`](#input), [`output`](#output) and [`ui`](#ui) APIs that can be used to render UI elements and control the plugin window.  You can also import these APIs using the standard `import` syntax in other modules, which is useful when your script grows beyond a single file.  They are provided to your callback simply as a convenience.
 
@@ -220,11 +230,13 @@ const selectedPage = await input.page();
 
 #### `text(label, options?)`
 
-Shows a single-line text entry field.
+Shows a text entry field.  By default, the field starts out as one line but will grow as more text is entered.  Press <kbd>shift</kbd><kbd>enter</kbd> to enter linebreaks without confirming the text.
 
 - `label`: The label to show above the entry field.
 - `options`: An optional object with any of the following keys.
   - `placeholder`: A string to show when the field is empty.
+  - `rows`: The number of rows to show when the field is first rendered.  Defaults to 1.
+  - `grow`: A boolean controlling whether the field grows as more text is entered.  Defaults to `true`.
 
 Returns the string that was entered.
 
@@ -320,13 +332,19 @@ The plugin window defaults to 300px wide by 200px tall.
 
 <br>
 
-#### `show(size?)`
+#### `show(options?)`
 
-Opens or shows the plugin window, and sets it to the specified size, if one is supplied.  It's normally not necessary to call `show()`, as any call to an `input` method will automatically show the plugin window.
+Opens or shows the plugin window, and sets it to the specified size and/or position, if supplied.  It's normally not necessary to call `show()`, as any call to an `input` method will automatically show the plugin window.
 
-- `size`:
-  - `width`: The desired `width` in px.
-  - `height`: The desired `height` in px.
+The `position` coordinates are specified in screen pixels from the top-left of the Figma window, *not* in Figma viewport coordinates.
+
+- `options`: An optional object with any of the following keys.
+  - `size`:
+    - `width`: The desired `width` in px.
+    - `height`: The desired `height` in px.
+  - `position`:
+    - `x`: The horizontal position.
+    - `y`: The vertical position.
 
 <br>
 

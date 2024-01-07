@@ -2,8 +2,8 @@
   "name": "plugin",
   "scripts": {
     "build": "build-figma-plugin --typecheck --minify",
-    "build:nomin": "build-figma-plugin --typecheck",
-    "dev": "build-figma-plugin --watch"
+    "dev": "build-figma-plugin --watch",
+    "watch": "build-figma-plugin --watch"
   },
   "dependencies": {
     "@create-figma-plugin/ui": "^3.0.2",
