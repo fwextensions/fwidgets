@@ -235,6 +235,7 @@ Shows a text entry field.  By default, the field starts out as one line but will
 - `label`: The label to show above the entry field.
 - `options`: An optional object with any of the following keys.
   - `placeholder`: A string to show when the field is empty.
+  - `defaultValue`: A string to show as the field's default value.
   - `rows`: The number of rows to show when the field is first rendered.  Defaults to 1.
   - `grow`: A boolean controlling whether the field grows as more text is entered.  Defaults to `true`.
 

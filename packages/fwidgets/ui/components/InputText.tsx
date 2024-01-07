@@ -9,7 +9,7 @@ interface InputTextProps {
 	confirm: (text: string | null) => void;
 	disabled?: boolean;
 	label?: string;
-	defaultText?: string;
+	defaultValue?: string;
 	placeholder?: string;
 	focused?: boolean;
 	grow?: boolean;
@@ -23,16 +23,17 @@ export default function InputText({
 		confirm,
 		disabled = false,
 		label = "",
-		defaultText = "",
+		defaultValue = "",
 		placeholder = "",
 		focused = false,
 		grow = true,
 		rows = 1,
 	}: InputTextProps)
 {
-	const [value, setValue] = useState(defaultText);
+	const [value, setValue] = useState(defaultValue);
 	const initialFocus = useInitialFocus();
 	const isValueValid = !!value;
+	const isMultiline = grow || rows > 1;
 
 	const handleInput = useCallback(
 		(event: InputEvent) => setValue(event.currentTarget.value),
@@ -46,9 +47,19 @@ export default function InputText({
 
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {
-			if (event.key === "Enter" && !event.shiftKey) {
-				event.preventDefault();
-				handleConfirm();
+			if (event.key === "Enter") {
+					// allow newlines only when shift is pressed and the field can show
+					// more than one line, so we don't get scrollbars in a tiny field.
+					// ignore shift-enter for single-line fields, so the user doesn't
+					// accidentally confirm the field.
+				if (event.shiftKey) {
+					if (!isMultiline) {
+						event.preventDefault();
+					}
+				} else {
+					event.preventDefault();
+					handleConfirm();
+				}
 			} else if (event.key === "Escape") {
 				confirm(null);
 			}
