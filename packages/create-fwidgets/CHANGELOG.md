@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/fwextensions/fwidgets/compare/create-fwidgets@0.0.3...create-fwidgets@0.0.4) (2024-01-07)
+
+
+### Chores
+
+- Update `create-figma-plugin`, `preact`, `typescript`, `plugin-typings` and `release-it`. ([2a007ce](https://github.com/fwextensions/fwidgets/commit/2a007ceb38f555e16eb76b1ee4b91d339f33a40a))
+
 ## [0.0.3](https://github.com/fwextensions/fwidgets/compare/create-fwidgets@0.0.2...create-fwidgets@0.0.3) (2023-12-27)
 
 
