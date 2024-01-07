@@ -2,7 +2,7 @@ import { fwidgets } from "fwidgets";
 
 // it's fine to have initialization code or utility functions declared outside
 // of the call to fwidgets() below, but any code that needs to interact with the
-// plugin UI must be within the callback.
+// plugin UI must be executed during the lifetime of the callback.
 function createRectangles(
 	count: number,
 	color: RGB)

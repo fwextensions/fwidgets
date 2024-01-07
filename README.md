@@ -51,7 +51,7 @@ In Figma, go to *Plugins > Development > Import plugin from manifest...* and sel
 
 ### Awaiting user input
 
-Open `src/main.ts` to see the sample code.  Most of it is contained within an async function that's passed to `fwidgets()`, whose return value is then exported as the default for this module.
+Open [`src/main.ts`](packages/plugin/src/main.ts) to see the sample code.  Most of it is contained within an async function that's passed to `fwidgets()`, whose return value is then exported as the default for this module.
 
 A typical use of the API looks like this:
 

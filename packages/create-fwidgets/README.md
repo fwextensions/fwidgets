@@ -34,4 +34,4 @@ The plugin will be rebuilt whenever files in the `src` directory change.  (This 
 
 In Figma, go to *Plugins > Development > Import plugin from manifest...* and select the `manifest.json` file that has been generated in your plugin's directory.  Run your new plugin to see the sample code ask for a color, then a number of rectangles to create, and finally a confirmation before creating the colored rectangles and copying their bounding boxes to the clipboard as JSON.
 
-[Get started customizing the code for your own Figma plugin.](https://github.com/fwextensions/fwidgets#awaiting-user-input)
+[Get started creating your own Figma plugin UI.](https://github.com/fwextensions/fwidgets#awaiting-user-input)
