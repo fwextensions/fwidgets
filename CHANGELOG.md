@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.0](https://github.com/fwextensions/fwidgets/compare/create-fwidgets@0.0.3...0.1.0) (2024-01-08)
+
+
+### Features
+
+- Export `FwidgetsUI()` from `ui/index.ts` so just a single line is needed in the user's `ui.tsx` ([e88cd51](https://github.com/fwextensions/fwidgets/commit/e88cd519bef4d128dc0716d0c7199f2f020f5d87))
+- Export `input`, `output` and `ui` modules from `fwidgets/main` so they can be imported outside of the `fwidgets()` function ([2f5ec80](https://github.com/fwextensions/fwidgets/commit/2f5ec8063ac7689b6704df074fd2dc185145ee0f))
+- Export main modules from top-level `fwidgets` package, as well as `fwidgets/main` ([58f09ea](https://github.com/fwextensions/fwidgets/commit/58f09eab0ccfafe6b3710af4cd4ec78ce2d7e575))
+- Make `input.text()` automatically grow in height as more text is entered ([2131958](https://github.com/fwextensions/fwidgets/commit/2131958c90128f8a911015aaa8a0a47db071a0ef))
+- Support a `defaultValue` prop on text fields ([b9c9111](https://github.com/fwextensions/fwidgets/commit/b9c911188c33b076a2d73dc17d72ed3bf1d7ca5f))
+
+
+### Chores
+
+- Update `classnames`, `typescript`, `plugin-typings` and `release-it` ([ae6238c](https://github.com/fwextensions/fwidgets/commit/ae6238c5aee38ffc663b0e758841c614d54a88c0))
+
 ## [0.0.3](https://github.com/fwextensions/fwidgets/compare/0.0.2...0.0.3) (2023-12-06)
 
 
